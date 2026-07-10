@@ -1,0 +1,42 @@
+{
+  "id": "castle_001",
+  "title": "Cloud Castle",
+  "category": "fantasy",
+  "difficulty": "medium",
+  "tags": [
+    "castle",
+    "fantasy"
+  ],
+  "lineArtPath": "coloring/fantasy/castle_001/line.png",
+  "maskPath": "coloring/fantasy/castle_001/mask.png",
+  "thumbnailPath": "coloring/fantasy/castle_001/thumb.png",
+  "licenseId": "generated-castle_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#951F8F",
+      "pixelCount": 40180
+    },
+    {
+      "id": 2,
+      "maskColor": "#70B222",
+      "pixelCount": 78081
+    },
+    {
+      "id": 3,
+      "maskColor": "#DFB18D",
+      "pixelCount": 3941
+    },
+    {
+      "id": 4,
+      "maskColor": "#281E1E",
+      "pixelCount": 3941
+    },
+    {
+      "id": 5,
+      "maskColor": "#BA6820",
+      "pixelCount": 11125
+    }
+  ]
+}

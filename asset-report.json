@@ -1,0 +1,197 @@
+{
+  "accepted": [
+    {
+      "id": "cat_001",
+      "category": "animals",
+      "title": "Cat",
+      "regions": 6
+    },
+    {
+      "id": "dog_001",
+      "category": "animals",
+      "title": "Dog",
+      "regions": 5
+    },
+    {
+      "id": "rabbit_001",
+      "category": "animals",
+      "title": "Rabbit",
+      "regions": 4
+    },
+    {
+      "id": "lion_001",
+      "category": "animals",
+      "title": "Lion",
+      "regions": 13
+    },
+    {
+      "id": "elephant_001",
+      "category": "animals",
+      "title": "Elephant",
+      "regions": 5
+    },
+    {
+      "id": "butterfly_001",
+      "category": "animals",
+      "title": "Butterfly",
+      "regions": 5
+    },
+    {
+      "id": "stegosaurus_001",
+      "category": "dinosaurs",
+      "title": "Stegosaurus",
+      "regions": 9
+    },
+    {
+      "id": "triceratops_001",
+      "category": "dinosaurs",
+      "title": "Triceratops",
+      "regions": 9
+    },
+    {
+      "id": "baby_dino_001",
+      "category": "dinosaurs",
+      "title": "Baby Dinosaur",
+      "regions": 9
+    },
+    {
+      "id": "dino_egg_001",
+      "category": "dinosaurs",
+      "title": "Dinosaur Egg",
+      "regions": 9
+    },
+    {
+      "id": "car_001",
+      "category": "vehicles",
+      "title": "Happy Car",
+      "regions": 4
+    },
+    {
+      "id": "train_001",
+      "category": "vehicles",
+      "title": "Little Train",
+      "regions": 6
+    },
+    {
+      "id": "rocket_001",
+      "category": "vehicles",
+      "title": "Rocket",
+      "regions": 5
+    },
+    {
+      "id": "boat_001",
+      "category": "vehicles",
+      "title": "Sail Boat",
+      "regions": 3
+    },
+    {
+      "id": "planet_001",
+      "category": "space",
+      "title": "Ring Planet",
+      "regions": 2
+    },
+    {
+      "id": "astronaut_001",
+      "category": "space",
+      "title": "Astronaut",
+      "regions": 6
+    },
+    {
+      "id": "moon_stars_001",
+      "category": "space",
+      "title": "Moon and Stars",
+      "regions": 3
+    },
+    {
+      "id": "alien_garden_001",
+      "category": "space",
+      "title": "Alien Garden",
+      "regions": 4
+    },
+    {
+      "id": "unicorn_001",
+      "category": "fantasy",
+      "title": "Unicorn",
+      "regions": 6
+    },
+    {
+      "id": "fairy_house_001",
+      "category": "fantasy",
+      "title": "Fairy House",
+      "regions": 5
+    },
+    {
+      "id": "friendly_dragon_001",
+      "category": "fantasy",
+      "title": "Friendly Dragon",
+      "regions": 6
+    },
+    {
+      "id": "castle_001",
+      "category": "fantasy",
+      "title": "Cloud Castle",
+      "regions": 5
+    },
+    {
+      "id": "fish_001",
+      "category": "sea_life",
+      "title": "Fish",
+      "regions": 3
+    },
+    {
+      "id": "turtle_001",
+      "category": "sea_life",
+      "title": "Turtle",
+      "regions": 6
+    },
+    {
+      "id": "octopus_001",
+      "category": "sea_life",
+      "title": "Octopus",
+      "regions": 8
+    },
+    {
+      "id": "mermaid_sea_scene_001",
+      "category": "sea_life",
+      "title": "Sea Garden",
+      "regions": 6
+    },
+    {
+      "id": "flower_garden_001",
+      "category": "nature",
+      "title": "Flower Garden",
+      "regions": 21
+    },
+    {
+      "id": "rainbow_001",
+      "category": "nature",
+      "title": "Rainbow",
+      "regions": 8
+    },
+    {
+      "id": "treehouse_001",
+      "category": "nature",
+      "title": "Treehouse",
+      "regions": 5
+    },
+    {
+      "id": "sunny_hills_001",
+      "category": "nature",
+      "title": "Sunny Hills",
+      "regions": 4
+    },
+    {
+      "id": "cupcake_001",
+      "category": "cute_food",
+      "title": "Cupcake",
+      "regions": 4
+    },
+    {
+      "id": "ice_cream_001",
+      "category": "cute_food",
+      "title": "Ice Cream",
+      "regions": 4
+    }
+  ],
+  "rejected": []
+}

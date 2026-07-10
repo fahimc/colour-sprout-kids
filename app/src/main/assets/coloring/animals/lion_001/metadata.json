@@ -1,0 +1,82 @@
+{
+  "id": "lion_001",
+  "title": "Lion",
+  "category": "animals",
+  "difficulty": "medium",
+  "tags": [
+    "lion",
+    "animal"
+  ],
+  "lineArtPath": "coloring/animals/lion_001/line.png",
+  "maskPath": "coloring/animals/lion_001/mask.png",
+  "thumbnailPath": "coloring/animals/lion_001/thumb.png",
+  "licenseId": "generated-lion_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#E1AF87",
+      "pixelCount": 2180
+    },
+    {
+      "id": 2,
+      "maskColor": "#BC661A",
+      "pixelCount": 2991
+    },
+    {
+      "id": 3,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 2597
+    },
+    {
+      "id": 4,
+      "maskColor": "#74AEF2",
+      "pixelCount": 66482
+    },
+    {
+      "id": 5,
+      "maskColor": "#4F6585",
+      "pixelCount": 4189
+    },
+    {
+      "id": 6,
+      "maskColor": "#971D89",
+      "pixelCount": 3843
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 4006
+    },
+    {
+      "id": 8,
+      "maskColor": "#70B222",
+      "pixelCount": 3257
+    },
+    {
+      "id": 9,
+      "maskColor": "#951F8F",
+      "pixelCount": 3816
+    },
+    {
+      "id": 10,
+      "maskColor": "#4D678B",
+      "pixelCount": 3488
+    },
+    {
+      "id": 11,
+      "maskColor": "#BA6820",
+      "pixelCount": 2390
+    },
+    {
+      "id": 12,
+      "maskColor": "#281E1E",
+      "pixelCount": 1983
+    },
+    {
+      "id": 13,
+      "maskColor": "#991B83",
+      "pixelCount": 37319
+    }
+  ]
+}

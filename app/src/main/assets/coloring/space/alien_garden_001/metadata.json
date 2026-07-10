@@ -1,0 +1,37 @@
+{
+  "id": "alien_garden_001",
+  "title": "Alien Garden",
+  "category": "space",
+  "difficulty": "medium",
+  "tags": [
+    "space",
+    "plants"
+  ],
+  "lineArtPath": "coloring/space/alien_garden_001/line.png",
+  "maskPath": "coloring/space/alien_garden_001/mask.png",
+  "thumbnailPath": "coloring/space/alien_garden_001/thumb.png",
+  "licenseId": "generated-alien_garden_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#70B222",
+      "pixelCount": 55802
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 43309
+    },
+    {
+      "id": 3,
+      "maskColor": "#BA6820",
+      "pixelCount": 15755
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 15755
+    }
+  ]
+}

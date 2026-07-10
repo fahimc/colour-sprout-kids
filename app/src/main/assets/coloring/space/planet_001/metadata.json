@@ -1,0 +1,27 @@
+{
+  "id": "planet_001",
+  "title": "Ring Planet",
+  "category": "space",
+  "difficulty": "easy",
+  "tags": [
+    "planet",
+    "space"
+  ],
+  "lineArtPath": "coloring/space/planet_001/line.png",
+  "maskPath": "coloring/space/planet_001/mask.png",
+  "thumbnailPath": "coloring/space/planet_001/thumb.png",
+  "licenseId": "generated-planet_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#70B222",
+      "pixelCount": 49564
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 34237
+    }
+  ]
+}

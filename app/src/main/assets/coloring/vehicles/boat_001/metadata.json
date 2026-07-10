@@ -1,0 +1,32 @@
+{
+  "id": "boat_001",
+  "title": "Sail Boat",
+  "category": "vehicles",
+  "difficulty": "easy",
+  "tags": [
+    "boat",
+    "vehicle"
+  ],
+  "lineArtPath": "coloring/vehicles/boat_001/line.png",
+  "maskPath": "coloring/vehicles/boat_001/mask.png",
+  "thumbnailPath": "coloring/vehicles/boat_001/thumb.png",
+  "licenseId": "generated-boat_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#951F8F",
+      "pixelCount": 24661
+    },
+    {
+      "id": 2,
+      "maskColor": "#BA6820",
+      "pixelCount": 21326
+    },
+    {
+      "id": 3,
+      "maskColor": "#70B222",
+      "pixelCount": 58181
+    }
+  ]
+}

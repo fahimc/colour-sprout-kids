@@ -1,0 +1,37 @@
+{
+  "id": "car_001",
+  "title": "Happy Car",
+  "category": "vehicles",
+  "difficulty": "easy",
+  "tags": [
+    "car",
+    "vehicle"
+  ],
+  "lineArtPath": "coloring/vehicles/car_001/line.png",
+  "maskPath": "coloring/vehicles/car_001/mask.png",
+  "thumbnailPath": "coloring/vehicles/car_001/thumb.png",
+  "licenseId": "generated-car_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#951F8F",
+      "pixelCount": 23836
+    },
+    {
+      "id": 2,
+      "maskColor": "#70B222",
+      "pixelCount": 83044
+    },
+    {
+      "id": 3,
+      "maskColor": "#BA6820",
+      "pixelCount": 8005
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 8005
+    }
+  ]
+}

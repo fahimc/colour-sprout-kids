@@ -1,0 +1,37 @@
+{
+  "id": "ice_cream_001",
+  "title": "Ice Cream",
+  "category": "cute_food",
+  "difficulty": "easy",
+  "tags": [
+    "ice cream",
+    "food"
+  ],
+  "lineArtPath": "coloring/cute_food/ice_cream_001/line.png",
+  "maskPath": "coloring/cute_food/ice_cream_001/mask.png",
+  "thumbnailPath": "coloring/cute_food/ice_cream_001/thumb.png",
+  "licenseId": "generated-ice_cream_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#DFB18D",
+      "pixelCount": 30562
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 25219
+    },
+    {
+      "id": 3,
+      "maskColor": "#BA6820",
+      "pixelCount": 24451
+    },
+    {
+      "id": 4,
+      "maskColor": "#70B222",
+      "pixelCount": 41646
+    }
+  ]
+}

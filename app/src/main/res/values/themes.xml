@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.ColourSproutKids" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#FFF6D8</item>
+        <item name="android:navigationBarColor">#7C5734</item>
+    </style>
+</resources>

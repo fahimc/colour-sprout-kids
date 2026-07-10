@@ -1,0 +1,48 @@
+{
+  "id": "mermaid_sea_scene_001",
+  "title": "Sea Garden",
+  "category": "sea_life",
+  "difficulty": "hard",
+  "tags": [
+    "sea",
+    "shells",
+    "mermaid style scene"
+  ],
+  "lineArtPath": "coloring/sea_life/mermaid_sea_scene_001/line.png",
+  "maskPath": "coloring/sea_life/mermaid_sea_scene_001/mask.png",
+  "thumbnailPath": "coloring/sea_life/mermaid_sea_scene_001/thumb.png",
+  "licenseId": "generated-mermaid_sea_scene_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#BA6820",
+      "pixelCount": 9656
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 20148
+    },
+    {
+      "id": 3,
+      "maskColor": "#DFB18D",
+      "pixelCount": 26185
+    },
+    {
+      "id": 4,
+      "maskColor": "#70B222",
+      "pixelCount": 18472
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 6213
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 8356
+    }
+  ]
+}

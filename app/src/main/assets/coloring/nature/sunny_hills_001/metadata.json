@@ -1,0 +1,37 @@
+{
+  "id": "sunny_hills_001",
+  "title": "Sunny Hills",
+  "category": "nature",
+  "difficulty": "easy",
+  "tags": [
+    "sun",
+    "nature"
+  ],
+  "lineArtPath": "coloring/nature/sunny_hills_001/line.png",
+  "maskPath": "coloring/nature/sunny_hills_001/mask.png",
+  "thumbnailPath": "coloring/nature/sunny_hills_001/thumb.png",
+  "licenseId": "generated-sunny_hills_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#70B222",
+      "pixelCount": 20321
+    },
+    {
+      "id": 2,
+      "maskColor": "#BA6820",
+      "pixelCount": 42542
+    },
+    {
+      "id": 3,
+      "maskColor": "#951F8F",
+      "pixelCount": 30726
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 66344
+    }
+  ]
+}

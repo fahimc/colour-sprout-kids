@@ -1,0 +1,261 @@
+#!/usr/bin/env python3
+import json
+import math
+import os
+from datetime import date
+from pathlib import Path
+
+from PIL import Image, ImageDraw, ImageFilter
+
+ROOT = Path(__file__).resolve().parents[1]
+ASSET_ROOT = ROOT / "app" / "src" / "main" / "assets" / "coloring"
+LICENSE_FILE = ROOT / "app" / "src" / "main" / "assets" / "licenses.json"
+REPORT_FILE = ROOT / "asset-report.json"
+SIZE = 768
+LINE = 10
+
+
+PAGES = [
+    ("animals", "cat_001", "Cat", "easy", ["cat", "pet", "animal"]),
+    ("animals", "dog_001", "Dog", "easy", ["dog", "pet", "animal"]),
+    ("animals", "rabbit_001", "Rabbit", "easy", ["rabbit", "animal"]),
+    ("animals", "lion_001", "Lion", "medium", ["lion", "animal"]),
+    ("animals", "elephant_001", "Elephant", "medium", ["elephant", "animal"]),
+    ("animals", "butterfly_001", "Butterfly", "easy", ["butterfly", "animal"]),
+    ("dinosaurs", "stegosaurus_001", "Stegosaurus", "medium", ["dinosaur", "prehistoric"]),
+    ("dinosaurs", "triceratops_001", "Triceratops", "medium", ["dinosaur", "prehistoric"]),
+    ("dinosaurs", "baby_dino_001", "Baby Dinosaur", "easy", ["dinosaur", "cute"]),
+    ("dinosaurs", "dino_egg_001", "Dinosaur Egg", "easy", ["dinosaur", "egg"]),
+    ("vehicles", "car_001", "Happy Car", "easy", ["car", "vehicle"]),
+    ("vehicles", "train_001", "Little Train", "medium", ["train", "vehicle"]),
+    ("vehicles", "rocket_001", "Rocket", "medium", ["rocket", "space", "vehicle"]),
+    ("vehicles", "boat_001", "Sail Boat", "easy", ["boat", "vehicle"]),
+    ("space", "planet_001", "Ring Planet", "easy", ["planet", "space"]),
+    ("space", "astronaut_001", "Astronaut", "medium", ["astronaut", "space"]),
+    ("space", "moon_stars_001", "Moon and Stars", "easy", ["moon", "space"]),
+    ("space", "alien_garden_001", "Alien Garden", "medium", ["space", "plants"]),
+    ("fantasy", "unicorn_001", "Unicorn", "medium", ["unicorn", "fantasy"]),
+    ("fantasy", "fairy_house_001", "Fairy House", "medium", ["fairy house", "fantasy"]),
+    ("fantasy", "friendly_dragon_001", "Friendly Dragon", "hard", ["dragon", "fantasy"]),
+    ("fantasy", "castle_001", "Cloud Castle", "medium", ["castle", "fantasy"]),
+    ("sea_life", "fish_001", "Fish", "easy", ["fish", "sea"]),
+    ("sea_life", "turtle_001", "Turtle", "medium", ["turtle", "sea"]),
+    ("sea_life", "octopus_001", "Octopus", "medium", ["octopus", "sea"]),
+    ("sea_life", "mermaid_sea_scene_001", "Sea Garden", "hard", ["sea", "shells", "mermaid style scene"]),
+    ("nature", "flower_garden_001", "Flower Garden", "easy", ["flowers", "nature"]),
+    ("nature", "rainbow_001", "Rainbow", "easy", ["rainbow", "nature"]),
+    ("nature", "treehouse_001", "Treehouse", "medium", ["tree", "nature"]),
+    ("nature", "sunny_hills_001", "Sunny Hills", "easy", ["sun", "nature"]),
+    ("cute_food", "cupcake_001", "Cupcake", "easy", ["cupcake", "food"]),
+    ("cute_food", "ice_cream_001", "Ice Cream", "easy", ["ice cream", "food"]),
+]
+
+
+def region_color(index):
+    r = (37 * index + 50) % 220 + 25
+    g = (73 * index + 80) % 220 + 25
+    b = (109 * index + 120) % 220 + 25
+    return (r, g, b, 255)
+
+
+def pastel(index):
+    r, g, b, _ = region_color(index)
+    return (min(255, 110 + r // 2), min(255, 110 + g // 2), min(255, 110 + b // 2), 255)
+
+
+def draw_shape(line, mask, thumb, kind, box, region, fill_thumb=True):
+    outline = ImageDraw.Draw(line)
+    regions = ImageDraw.Draw(mask)
+    thumbs = ImageDraw.Draw(thumb)
+    color = region_color(region)
+    thumb_color = pastel(region)
+    if kind == "ellipse":
+        outline.ellipse(box, outline=(20, 20, 20, 255), width=LINE)
+        regions.ellipse(shrink(box, LINE), fill=color)
+        if fill_thumb:
+            thumbs.ellipse(shrink(box, LINE), fill=thumb_color, outline=(20, 20, 20, 255), width=LINE)
+    elif kind == "rect":
+        outline.rounded_rectangle(box, radius=24, outline=(20, 20, 20, 255), width=LINE)
+        regions.rounded_rectangle(shrink(box, LINE), radius=18, fill=color)
+        if fill_thumb:
+            thumbs.rounded_rectangle(shrink(box, LINE), radius=18, fill=thumb_color, outline=(20, 20, 20, 255), width=LINE)
+    elif kind == "poly":
+        outline.line(box + [box[0]], fill=(20, 20, 20, 255), width=LINE, joint="curve")
+        regions.polygon(box, fill=color)
+        if fill_thumb:
+            thumbs.polygon(box, fill=thumb_color)
+            thumbs.line(box + [box[0]], fill=(20, 20, 20, 255), width=LINE, joint="curve")
+
+
+def shrink(box, amount):
+    if isinstance(box[0], tuple):
+        return box
+    x0, y0, x1, y1 = box
+    return (x0 + amount, y0 + amount, x1 - amount, y1 - amount)
+
+
+def add_face(line, thumb, cx, cy, scale=1.0):
+    d1 = ImageDraw.Draw(line)
+    d2 = ImageDraw.Draw(thumb)
+    for d in (d1, d2):
+        w = max(4, int(6 * scale))
+        d.ellipse((cx - 50 * scale, cy - 20 * scale, cx - 32 * scale, cy - 2 * scale), fill=(20, 20, 20, 255))
+        d.ellipse((cx + 32 * scale, cy - 20 * scale, cx + 50 * scale, cy - 2 * scale), fill=(20, 20, 20, 255))
+        d.arc((cx - 34 * scale, cy - 4 * scale, cx + 34 * scale, cy + 42 * scale), 15, 165, fill=(20, 20, 20, 255), width=w)
+
+
+def page_scene(page_id, title):
+    line = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+    mask = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+    thumb = Image.new("RGBA", (SIZE, SIZE), (255, 250, 231, 255))
+    d_line = ImageDraw.Draw(line)
+    d_thumb = ImageDraw.Draw(thumb)
+    n = 1
+
+    def shape(kind, box):
+        nonlocal n
+        draw_shape(line, mask, thumb, kind, box, n)
+        n += 1
+
+    lower = page_id
+    if "cat" in lower:
+        shape("ellipse", (210, 240, 558, 590)); shape("ellipse", (270, 110, 498, 338))
+        shape("poly", [(285, 135), (325, 35), (360, 155)]); shape("poly", [(408, 155), (450, 35), (485, 135)])
+        shape("ellipse", (175, 420, 260, 610)); shape("ellipse", (508, 420, 593, 610)); add_face(line, thumb, 384, 225, 1.2)
+    elif "dog" in lower:
+        shape("ellipse", (210, 250, 558, 590)); shape("ellipse", (255, 120, 513, 350))
+        shape("ellipse", (170, 125, 280, 325)); shape("ellipse", (488, 125, 598, 325)); shape("ellipse", (326, 245, 442, 325)); add_face(line, thumb, 384, 230, 1.0)
+    elif "rabbit" in lower:
+        shape("ellipse", (225, 285, 543, 620)); shape("ellipse", (275, 160, 493, 382))
+        shape("ellipse", (285, 20, 355, 205)); shape("ellipse", (413, 20, 483, 205)); add_face(line, thumb, 384, 255, 1.0)
+    elif "lion" in lower:
+        for angle in range(0, 360, 30):
+            cx = 384 + math.cos(math.radians(angle)) * 150
+            cy = 310 + math.sin(math.radians(angle)) * 130
+            shape("ellipse", (cx - 60, cy - 60, cx + 60, cy + 60))
+        shape("ellipse", (230, 150, 538, 468)); shape("ellipse", (250, 430, 518, 640)); add_face(line, thumb, 384, 295, 1.1)
+    elif "elephant" in lower:
+        shape("ellipse", (170, 210, 598, 565)); shape("ellipse", (135, 205, 305, 430)); shape("ellipse", (463, 205, 633, 430))
+        shape("ellipse", (300, 120, 468, 335)); shape("rect", (350, 300, 420, 610)); add_face(line, thumb, 384, 225, .8)
+    elif "butterfly" in lower:
+        shape("ellipse", (110, 100, 360, 380)); shape("ellipse", (408, 100, 658, 380)); shape("ellipse", (145, 360, 350, 635)); shape("ellipse", (418, 360, 623, 635)); shape("ellipse", (350, 190, 418, 590))
+    elif "dino" in lower or "stegosaurus" in lower or "triceratops" in lower:
+        shape("ellipse", (150, 285, 590, 530)); shape("ellipse", (480, 220, 650, 385))
+        shape("poly", [(155, 370), (40, 300), (145, 460)]); shape("rect", (225, 490, 285, 650)); shape("rect", (445, 490, 505, 650))
+        for x in range(240, 500, 70):
+            shape("poly", [(x, 290), (x + 35, 205), (x + 70, 290)])
+        add_face(line, thumb, 565, 305, .75)
+    elif "car" in lower:
+        shape("rect", (145, 310, 625, 515)); shape("poly", [(240, 310), (320, 210), (475, 210), (555, 310)]); shape("ellipse", (210, 475, 330, 595)); shape("ellipse", (465, 475, 585, 595))
+    elif "train" in lower:
+        shape("rect", (110, 300, 305, 500)); shape("rect", (315, 250, 555, 500)); shape("rect", (545, 335, 655, 500)); shape("ellipse", (145, 470, 235, 560)); shape("ellipse", (345, 470, 435, 560)); shape("ellipse", (525, 470, 615, 560))
+    elif "rocket" in lower:
+        shape("ellipse", (280, 110, 488, 560)); shape("poly", [(280, 365), (160, 585), (315, 520)]); shape("poly", [(488, 365), (608, 585), (453, 520)]); shape("ellipse", (330, 210, 438, 318)); shape("poly", [(325, 555), (384, 710), (443, 555)])
+    elif "boat" in lower:
+        shape("poly", [(140, 430), (630, 430), (535, 575), (230, 575)]); shape("poly", [(380, 145), (380, 415), (560, 415)]); shape("poly", [(365, 175), (190, 415), (365, 415)])
+    elif "planet" in lower:
+        shape("ellipse", (220, 190, 548, 518)); shape("ellipse", (130, 300, 638, 408))
+    elif "astronaut" in lower:
+        shape("ellipse", (270, 80, 498, 300)); shape("rect", (250, 300, 518, 565)); shape("rect", (135, 315, 260, 500)); shape("rect", (508, 315, 633, 500)); shape("rect", (290, 545, 365, 690)); shape("rect", (403, 545, 478, 690))
+    elif "moon" in lower:
+        shape("ellipse", (145, 110, 450, 445)); shape("ellipse", (430, 145, 520, 235)); shape("poly", [(565, 90), (590, 155), (660, 160), (605, 205), (625, 275), (565, 235), (505, 275), (525, 205), (470, 160), (540, 155)])
+    elif "alien" in lower:
+        shape("ellipse", (230, 115, 538, 380)); shape("ellipse", (260, 365, 508, 625)); shape("ellipse", (145, 450, 275, 650)); shape("ellipse", (493, 450, 623, 650)); add_face(line, thumb, 384, 250, 1.15)
+    elif "unicorn" in lower:
+        shape("ellipse", (190, 330, 560, 565)); shape("ellipse", (435, 160, 610, 360)); shape("poly", [(495, 170), (535, 35), (575, 185)]); shape("ellipse", (120, 260, 265, 470)); shape("rect", (245, 540, 305, 680)); shape("rect", (440, 540, 500, 680)); add_face(line, thumb, 535, 260, .65)
+    elif "fairy" in lower or "castle" in lower:
+        shape("rect", (210, 315, 558, 630)); shape("poly", [(180, 315), (384, 120), (588, 315)]); shape("rect", (335, 470, 435, 630)); shape("ellipse", (235, 365, 325, 455)); shape("ellipse", (443, 365, 533, 455))
+    elif "dragon" in lower:
+        shape("ellipse", (165, 310, 560, 555)); shape("ellipse", (485, 180, 650, 355)); shape("poly", [(260, 310), (135, 150), (375, 295)]); shape("poly", [(165, 420), (45, 335), (135, 520)]); shape("rect", (255, 530, 315, 675)); shape("rect", (455, 530, 515, 675)); add_face(line, thumb, 570, 270, .65)
+    elif "fish" in lower:
+        shape("ellipse", (165, 220, 560, 520)); shape("poly", [(560, 370), (700, 240), (700, 500)]); shape("poly", [(330, 220), (410, 110), (480, 240)]); add_face(line, thumb, 275, 350, .6)
+    elif "turtle" in lower:
+        shape("ellipse", (170, 250, 560, 565)); shape("ellipse", (510, 310, 655, 455)); shape("ellipse", (115, 255, 230, 370)); shape("ellipse", (115, 445, 230, 560)); shape("ellipse", (430, 165, 540, 275)); shape("ellipse", (430, 540, 540, 650)); add_face(line, thumb, 585, 375, .55)
+    elif "octopus" in lower:
+        shape("ellipse", (240, 110, 528, 405))
+        for x in range(145, 570, 70):
+            shape("ellipse", (x, 360, x + 120, 650))
+        add_face(line, thumb, 384, 260, .9)
+    elif "sea_garden" in lower or "mermaid" in lower:
+        shape("ellipse", (110, 420, 285, 590)); shape("ellipse", (470, 210, 635, 405)); shape("poly", [(320, 270), (390, 135), (460, 270)]); shape("rect", (335, 270, 445, 580)); shape("poly", [(350, 580), (250, 690), (430, 650)]); shape("poly", [(430, 580), (540, 690), (350, 650)])
+    elif "flower" in lower:
+        for cx in (210, 384, 558):
+            for angle in range(0, 360, 72):
+                shape("ellipse", (cx + math.cos(math.radians(angle)) * 58 - 45, 270 + math.sin(math.radians(angle)) * 58 - 45, cx + math.cos(math.radians(angle)) * 58 + 45, 270 + math.sin(math.radians(angle)) * 58 + 45))
+            shape("ellipse", (cx - 50, 220, cx + 50, 320)); shape("rect", (cx - 16, 330, cx + 16, 620))
+    elif "rainbow" in lower:
+        for i in range(6):
+            shape("ellipse", (115 + i * 38, 165 + i * 38, 653 - i * 38, 705 + i * 38))
+        shape("ellipse", (85, 535, 285, 675)); shape("ellipse", (483, 535, 683, 675))
+    elif "treehouse" in lower:
+        shape("rect", (330, 380, 440, 690)); shape("ellipse", (155, 110, 613, 450)); shape("rect", (255, 300, 520, 515)); shape("poly", [(230, 300), (384, 175), (545, 300)]); shape("rect", (345, 410, 430, 515))
+    elif "sunny" in lower:
+        shape("ellipse", (80, 80, 260, 260)); shape("poly", [(80, 575), (280, 360), (500, 575)]); shape("poly", [(300, 575), (560, 320), (730, 575)]); shape("ellipse", (170, 505, 620, 720))
+    elif "cupcake" in lower:
+        shape("rect", (235, 350, 533, 650)); shape("ellipse", (190, 175, 578, 420)); shape("ellipse", (305, 90, 463, 245)); shape("ellipse", (360, 55, 418, 113))
+    elif "ice_cream" in lower:
+        shape("poly", [(255, 335), (513, 335), (384, 710)]); shape("ellipse", (175, 175, 385, 390)); shape("ellipse", (375, 175, 585, 390)); shape("ellipse", (280, 65, 488, 290))
+    else:
+        shape("ellipse", (180, 160, 588, 568)); add_face(line, thumb, 384, 350, 1)
+
+    # Add a paper-card outline for thumbnails only.
+    d_thumb.rounded_rectangle((20, 20, 748, 748), radius=30, outline=(120, 90, 60, 255), width=5)
+    return line, mask, thumb
+
+
+def count_regions(mask):
+    pixels = mask.getdata()
+    counts = {}
+    for px in pixels:
+        if px[3] > 0:
+            counts[px] = counts.get(px, 0) + 1
+    return [{"id": i + 1, "maskColor": "#%02X%02X%02X" % c[:3], "pixelCount": count} for i, (c, count) in enumerate(counts.items())]
+
+
+def main():
+    ASSET_ROOT.mkdir(parents=True, exist_ok=True)
+    licenses = []
+    accepted = []
+    for category, page_id, title, difficulty, tags in PAGES:
+        out = ASSET_ROOT / category / page_id
+        out.mkdir(parents=True, exist_ok=True)
+        line, mask, thumb = page_scene(page_id, title)
+        line.save(out / "line.png")
+        mask.save(out / "mask.png")
+        thumb.resize((384, 384), Image.Resampling.LANCZOS).save(out / "thumb.png")
+        license_id = f"generated-{page_id}"
+        metadata = {
+            "id": page_id,
+            "title": title,
+            "category": category,
+            "difficulty": difficulty,
+            "tags": tags,
+            "lineArtPath": f"coloring/{category}/{page_id}/line.png",
+            "maskPath": f"coloring/{category}/{page_id}/mask.png",
+            "thumbnailPath": f"coloring/{category}/{page_id}/thumb.png",
+            "licenseId": license_id,
+            "needs_manual_mask": False,
+            "regions": count_regions(mask),
+        }
+        (out / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+        licenses.append({
+            "id": license_id,
+            "title": title,
+            "source site": "Project-generated original asset",
+            "original source link": "tools/fetch_coloring_assets",
+            "author if available": "ColourSprout Kids generator",
+            "license": "CC0-1.0 / public-domain dedication for generated starter art",
+            "attribution required yes/no": "no",
+            "local file path": f"app/src/main/assets/coloring/{category}/{page_id}/line.png",
+            "date downloaded": str(date.today()),
+        })
+        accepted.append({"id": page_id, "category": category, "title": title, "regions": len(metadata["regions"])})
+    LICENSE_FILE.write_text(json.dumps(licenses, indent=2), encoding="utf-8")
+    REPORT_FILE.write_text(json.dumps({"accepted": accepted, "rejected": []}, indent=2), encoding="utf-8")
+    print(f"Generated {len(accepted)} colouring pages in {ASSET_ROOT}")
+    print(f"Wrote {LICENSE_FILE}")
+    print(f"Wrote {REPORT_FILE}")
+
+
+if __name__ == "__main__":
+    main()

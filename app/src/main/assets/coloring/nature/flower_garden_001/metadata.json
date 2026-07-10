@@ -1,0 +1,122 @@
+{
+  "id": "flower_garden_001",
+  "title": "Flower Garden",
+  "category": "nature",
+  "difficulty": "easy",
+  "tags": [
+    "flowers",
+    "nature"
+  ],
+  "lineArtPath": "coloring/nature/flower_garden_001/line.png",
+  "maskPath": "coloring/nature/flower_garden_001/mask.png",
+  "thumbnailPath": "coloring/nature/flower_garden_001/thumb.png",
+  "licenseId": "generated-flower_garden_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#281E1E",
+      "pixelCount": 3369
+    },
+    {
+      "id": 2,
+      "maskColor": "#4F6585",
+      "pixelCount": 3369
+    },
+    {
+      "id": 3,
+      "maskColor": "#76ACEC",
+      "pixelCount": 3369
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 3324
+    },
+    {
+      "id": 5,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 3324
+    },
+    {
+      "id": 6,
+      "maskColor": "#51637F",
+      "pixelCount": 3324
+    },
+    {
+      "id": 7,
+      "maskColor": "#4D678B",
+      "pixelCount": 5145
+    },
+    {
+      "id": 8,
+      "maskColor": "#74AEF2",
+      "pixelCount": 5145
+    },
+    {
+      "id": 9,
+      "maskColor": "#9B197D",
+      "pixelCount": 5145
+    },
+    {
+      "id": 10,
+      "maskColor": "#70B222",
+      "pixelCount": 3312
+    },
+    {
+      "id": 11,
+      "maskColor": "#971D89",
+      "pixelCount": 3312
+    },
+    {
+      "id": 12,
+      "maskColor": "#BE64F0",
+      "pixelCount": 3312
+    },
+    {
+      "id": 13,
+      "maskColor": "#BA6820",
+      "pixelCount": 3323
+    },
+    {
+      "id": 14,
+      "maskColor": "#E1AF87",
+      "pixelCount": 3323
+    },
+    {
+      "id": 15,
+      "maskColor": "#2C1AEE",
+      "pixelCount": 3323
+    },
+    {
+      "id": 16,
+      "maskColor": "#951F8F",
+      "pixelCount": 3084
+    },
+    {
+      "id": 17,
+      "maskColor": "#BC661A",
+      "pixelCount": 3084
+    },
+    {
+      "id": 18,
+      "maskColor": "#E3AD81",
+      "pixelCount": 3084
+    },
+    {
+      "id": 19,
+      "maskColor": "#72B01C",
+      "pixelCount": 3483
+    },
+    {
+      "id": 20,
+      "maskColor": "#991B83",
+      "pixelCount": 3483
+    },
+    {
+      "id": 21,
+      "maskColor": "#C062EA",
+      "pixelCount": 3483
+    }
+  ]
+}

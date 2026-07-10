@@ -1,0 +1,43 @@
+{
+  "id": "dog_001",
+  "title": "Dog",
+  "category": "animals",
+  "difficulty": "easy",
+  "tags": [
+    "dog",
+    "pet",
+    "animal"
+  ],
+  "lineArtPath": "coloring/animals/dog_001/line.png",
+  "maskPath": "coloring/animals/dog_001/mask.png",
+  "thumbnailPath": "coloring/animals/dog_001/thumb.png",
+  "licenseId": "generated-dog_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#951F8F",
+      "pixelCount": 34538
+    },
+    {
+      "id": 2,
+      "maskColor": "#BA6820",
+      "pixelCount": 12939
+    },
+    {
+      "id": 3,
+      "maskColor": "#DFB18D",
+      "pixelCount": 12939
+    },
+    {
+      "id": 4,
+      "maskColor": "#281E1E",
+      "pixelCount": 4641
+    },
+    {
+      "id": 5,
+      "maskColor": "#70B222",
+      "pixelCount": 71628
+    }
+  ]
+}

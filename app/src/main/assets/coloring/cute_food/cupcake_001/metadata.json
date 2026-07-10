@@ -1,0 +1,37 @@
+{
+  "id": "cupcake_001",
+  "title": "Cupcake",
+  "category": "cute_food",
+  "difficulty": "easy",
+  "tags": [
+    "cupcake",
+    "food"
+  ],
+  "lineArtPath": "coloring/cute_food/cupcake_001/line.png",
+  "maskPath": "coloring/cute_food/cupcake_001/mask.png",
+  "thumbnailPath": "coloring/cute_food/cupcake_001/thumb.png",
+  "licenseId": "generated-cupcake_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#DFB18D",
+      "pixelCount": 1193
+    },
+    {
+      "id": 2,
+      "maskColor": "#BA6820",
+      "pixelCount": 14767
+    },
+    {
+      "id": 3,
+      "maskColor": "#951F8F",
+      "pixelCount": 60727
+    },
+    {
+      "id": 4,
+      "maskColor": "#70B222",
+      "pixelCount": 67358
+    }
+  ]
+}

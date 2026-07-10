@@ -1,0 +1,42 @@
+{
+  "id": "butterfly_001",
+  "title": "Butterfly",
+  "category": "animals",
+  "difficulty": "easy",
+  "tags": [
+    "butterfly",
+    "animal"
+  ],
+  "lineArtPath": "coloring/animals/butterfly_001/line.png",
+  "maskPath": "coloring/animals/butterfly_001/mask.png",
+  "thumbnailPath": "coloring/animals/butterfly_001/thumb.png",
+  "licenseId": "generated-butterfly_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#70B222",
+      "pixelCount": 47329
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 47329
+    },
+    {
+      "id": 3,
+      "maskColor": "#281E1E",
+      "pixelCount": 14705
+    },
+    {
+      "id": 4,
+      "maskColor": "#BA6820",
+      "pixelCount": 37360
+    },
+    {
+      "id": 5,
+      "maskColor": "#DFB18D",
+      "pixelCount": 37360
+    }
+  ]
+}

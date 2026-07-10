@@ -1,0 +1,48 @@
+{
+  "id": "cat_001",
+  "title": "Cat",
+  "category": "animals",
+  "difficulty": "easy",
+  "tags": [
+    "cat",
+    "pet",
+    "animal"
+  ],
+  "lineArtPath": "coloring/animals/cat_001/line.png",
+  "maskPath": "coloring/animals/cat_001/mask.png",
+  "thumbnailPath": "coloring/animals/cat_001/thumb.png",
+  "licenseId": "generated-cat_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#BA6820",
+      "pixelCount": 4266
+    },
+    {
+      "id": 2,
+      "maskColor": "#DFB18D",
+      "pixelCount": 4315
+    },
+    {
+      "id": 3,
+      "maskColor": "#951F8F",
+      "pixelCount": 32985
+    },
+    {
+      "id": 4,
+      "maskColor": "#70B222",
+      "pixelCount": 73584
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 8854
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 8854
+    }
+  ]
+}

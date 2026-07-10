@@ -1,0 +1,47 @@
+{
+  "id": "unicorn_001",
+  "title": "Unicorn",
+  "category": "fantasy",
+  "difficulty": "medium",
+  "tags": [
+    "unicorn",
+    "fantasy"
+  ],
+  "lineArtPath": "coloring/fantasy/unicorn_001/line.png",
+  "maskPath": "coloring/fantasy/unicorn_001/mask.png",
+  "thumbnailPath": "coloring/fantasy/unicorn_001/thumb.png",
+  "licenseId": "generated-unicorn_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#BA6820",
+      "pixelCount": 5851
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 21876
+    },
+    {
+      "id": 3,
+      "maskColor": "#DFB18D",
+      "pixelCount": 18870
+    },
+    {
+      "id": 4,
+      "maskColor": "#70B222",
+      "pixelCount": 57038
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 4665
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 4665
+    }
+  ]
+}

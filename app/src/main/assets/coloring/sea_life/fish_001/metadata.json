@@ -1,0 +1,32 @@
+{
+  "id": "fish_001",
+  "title": "Fish",
+  "category": "sea_life",
+  "difficulty": "easy",
+  "tags": [
+    "fish",
+    "sea"
+  ],
+  "lineArtPath": "coloring/sea_life/fish_001/line.png",
+  "maskPath": "coloring/sea_life/fish_001/mask.png",
+  "thumbnailPath": "coloring/sea_life/fish_001/thumb.png",
+  "licenseId": "generated-fish_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#BA6820",
+      "pixelCount": 9176
+    },
+    {
+      "id": 2,
+      "maskColor": "#70B222",
+      "pixelCount": 82920
+    },
+    {
+      "id": 3,
+      "maskColor": "#951F8F",
+      "pixelCount": 18461
+    }
+  ]
+}

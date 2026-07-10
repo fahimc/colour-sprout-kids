@@ -1,0 +1,62 @@
+{
+  "id": "stegosaurus_001",
+  "title": "Stegosaurus",
+  "category": "dinosaurs",
+  "difficulty": "medium",
+  "tags": [
+    "dinosaur",
+    "prehistoric"
+  ],
+  "lineArtPath": "coloring/dinosaurs/stegosaurus_001/line.png",
+  "maskPath": "coloring/dinosaurs/stegosaurus_001/mask.png",
+  "thumbnailPath": "coloring/dinosaurs/stegosaurus_001/thumb.png",
+  "licenseId": "generated-stegosaurus_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#4D678B",
+      "pixelCount": 3094
+    },
+    {
+      "id": 2,
+      "maskColor": "#72B01C",
+      "pixelCount": 3094
+    },
+    {
+      "id": 3,
+      "maskColor": "#971D89",
+      "pixelCount": 3094
+    },
+    {
+      "id": 4,
+      "maskColor": "#BC661A",
+      "pixelCount": 3096
+    },
+    {
+      "id": 5,
+      "maskColor": "#951F8F",
+      "pixelCount": 16734
+    },
+    {
+      "id": 6,
+      "maskColor": "#70B222",
+      "pixelCount": 72554
+    },
+    {
+      "id": 7,
+      "maskColor": "#BA6820",
+      "pixelCount": 5681
+    },
+    {
+      "id": 8,
+      "maskColor": "#DFB18D",
+      "pixelCount": 5485
+    },
+    {
+      "id": 9,
+      "maskColor": "#281E1E",
+      "pixelCount": 5485
+    }
+  ]
+}

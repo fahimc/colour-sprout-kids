@@ -1,0 +1,32 @@
+{
+  "id": "moon_stars_001",
+  "title": "Moon and Stars",
+  "category": "space",
+  "difficulty": "easy",
+  "tags": [
+    "moon",
+    "space"
+  ],
+  "lineArtPath": "coloring/space/moon_stars_001/line.png",
+  "maskPath": "coloring/space/moon_stars_001/mask.png",
+  "thumbnailPath": "coloring/space/moon_stars_001/thumb.png",
+  "licenseId": "generated-moon_stars_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#BA6820",
+      "pixelCount": 13106
+    },
+    {
+      "id": 2,
+      "maskColor": "#70B222",
+      "pixelCount": 70920
+    },
+    {
+      "id": 3,
+      "maskColor": "#951F8F",
+      "pixelCount": 3382
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "astronaut_001",
+  "title": "Astronaut",
+  "category": "space",
+  "difficulty": "medium",
+  "tags": [
+    "astronaut",
+    "space"
+  ],
+  "lineArtPath": "coloring/space/astronaut_001/line.png",
+  "maskPath": "coloring/space/astronaut_001/mask.png",
+  "thumbnailPath": "coloring/space/astronaut_001/thumb.png",
+  "licenseId": "generated-astronaut_001",
+  "needs_manual_mask": false,
+  "regions": [
+    {
+      "id": 1,
+      "maskColor": "#70B222",
+      "pixelCount": 32957
+    },
+    {
+      "id": 2,
+      "maskColor": "#951F8F",
+      "pixelCount": 60902
+    },
+    {
+      "id": 3,
+      "maskColor": "#BA6820",
+      "pixelCount": 17300
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 17300
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 6760
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 6760
+    }
+  ]
+}
