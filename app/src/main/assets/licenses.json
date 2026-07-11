@@ -350,5 +350,16 @@
     "attribution required yes/no": "no",
     "local file path": "app/src/main/assets/coloring/vehicles/hot_air_balloon_001/line.png",
     "date downloaded": "2026-07-11"
+  },
+  {
+    "id": "font-super-bubble",
+    "title": "Super Bubble Font",
+    "source site": "DaFont",
+    "original source link": "https://www.dafont.com/super-bubble.font",
+    "author if available": "fsuarez913",
+    "license": "100% Free; author note says free for personal use and commercial use",
+    "attribution required yes/no": "no",
+    "local file path": "app/src/main/res/font/super_bubble.ttf",
+    "date downloaded": "2026-07-11"
   }
 ]

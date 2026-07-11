@@ -89,6 +89,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
@@ -263,30 +265,32 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
 
 @Composable
 fun CleanHomeLogo() {
+    val logoFont = FontFamily(Font(R.font.super_bubble))
     Column(
         modifier = Modifier
             .fillMaxWidth(0.88f)
             .background(Color(0xF7FFFFFF), RoundedCornerShape(34.dp))
             .border(4.dp, Color.White, RoundedCornerShape(34.dp))
-            .padding(horizontal = 16.dp, vertical = 18.dp),
+            .padding(horizontal = 18.dp, vertical = 22.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        LogoWord("Colour", listOf(Color(0xFFFF2D8D), Color(0xFFFF8A00), Color(0xFFFFC928), Color(0xFF3AC65D), Color(0xFF1AA7FF), Color(0xFF7A4DFF)), 48.sp)
-        Text("My", color = Color(0xFF8C28D9), fontSize = 34.sp, fontWeight = FontWeight.Black)
-        LogoWord("World", listOf(Color(0xFF1AA7FF), Color(0xFF1167F2), Color(0xFF9B20D9), Color(0xFFFF2D55), Color(0xFFFF8A00)), 50.sp)
+        LogoWord("Colour", listOf(Color(0xFFFF2D8D), Color(0xFFFF8A00), Color(0xFFFFC928), Color(0xFF3AC65D), Color(0xFF1AA7FF), Color(0xFF7A4DFF)), 47.sp, logoFont)
+        Text("My", color = Color(0xFF8C28D9), fontSize = 35.sp, lineHeight = 38.sp, fontFamily = logoFont)
+        LogoWord("World", listOf(Color(0xFF1AA7FF), Color(0xFF1167F2), Color(0xFF9B20D9), Color(0xFFFF2D55), Color(0xFFFF8A00)), 49.sp, logoFont)
     }
 }
 
 @Composable
-fun LogoWord(text: String, colors: List<Color>, fontSize: androidx.compose.ui.unit.TextUnit) {
+fun LogoWord(text: String, colors: List<Color>, fontSize: androidx.compose.ui.unit.TextUnit, fontFamily: FontFamily) {
     Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
         text.forEachIndexed { index, ch ->
             Text(
                 ch.toString(),
                 color = colors[index % colors.size],
                 fontSize = fontSize,
-                fontWeight = FontWeight.Black,
+                lineHeight = fontSize,
+                fontFamily = fontFamily,
             )
         }
     }

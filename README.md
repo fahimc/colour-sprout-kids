@@ -13,7 +13,7 @@ Colour My World is a kid-friendly Android colouring-book game built with Kotlin,
 - Export of final artwork as PNG.
 - Asset generator at `tools/fetch_coloring_assets`.
 - License manifest at `app/src/main/assets/licenses.json`.
-- Splash background and logo source notes at `docs/splash/SOURCE.md` and `docs/logo/SOURCE.md`.
+- Splash background and logo source notes at `docs/splash/SOURCE.md`, `docs/logo/SOURCE.md`, and `docs/licenses/super_bubble_font.md`.
 
 ## Mask-Based Colouring System
 
