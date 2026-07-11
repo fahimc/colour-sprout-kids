@@ -278,19 +278,19 @@ fun SplashCreditBadge(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
+            "Game Maker",
+            color = Color(0xFF5C3B22),
+            fontSize = 13.sp,
+            lineHeight = 15.sp,
+            fontWeight = FontWeight.Black,
+            textAlign = TextAlign.Center,
+        )
+        Text(
             "Remetheia",
             color = Color(0xFF7A2BCE),
             fontSize = 24.sp,
             lineHeight = 25.sp,
             fontFamily = logoFont,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            "The Game Maker",
-            color = Color(0xFF5C3B22),
-            fontSize = 13.sp,
-            lineHeight = 15.sp,
-            fontWeight = FontWeight.Black,
             textAlign = TextAlign.Center,
         )
     }
