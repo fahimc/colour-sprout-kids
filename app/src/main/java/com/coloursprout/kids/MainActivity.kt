@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
@@ -162,22 +163,34 @@ fun ColourSproutApp() {
     val context = LocalContext.current
     var screen by remember { mutableStateOf<Screen>(Screen.Home) }
     var pages by remember { mutableStateOf<List<ColoringPage>>(emptyList()) }
+    fun navigateBack() {
+        screen = when (screen) {
+            Screen.Home -> Screen.Home
+            Screen.Browser -> Screen.Home
+            Screen.Gallery -> Screen.Browser
+            is Screen.Coloring -> Screen.Browser
+            is Screen.Finished -> Screen.Browser
+        }
+    }
     LaunchedEffect(Unit) {
         pages = withContext(Dispatchers.IO) { loadPages(context) }
     }
     MaterialTheme {
+        BackHandler(enabled = screen != Screen.Home) {
+            navigateBack()
+        }
         Surface(Modifier.fillMaxSize(), color = Color(0xFFFFF4D7)) {
             when (val current = screen) {
                 Screen.Home -> HomeScreen(onPlay = { screen = Screen.Browser }, onGallery = { screen = Screen.Gallery })
-                Screen.Browser -> BrowserScreen(pages, onBack = { screen = Screen.Home }, onOpen = { screen = Screen.Coloring(it) }, onGallery = { screen = Screen.Gallery })
+                Screen.Browser -> BrowserScreen(pages, onBack = ::navigateBack, onOpen = { screen = Screen.Coloring(it) }, onGallery = { screen = Screen.Gallery })
                 Screen.Gallery -> GalleryScreen(
                     pages = pages,
-                    onBack = { screen = Screen.Browser },
+                    onBack = ::navigateBack,
                     onOpen = { screen = Screen.Coloring(it) },
                 )
                 is Screen.Coloring -> ColoringScreen(
                     page = current.page,
-                    onBack = { screen = Screen.Browser },
+                    onBack = ::navigateBack,
                     onFinished = { path -> screen = Screen.Finished(current.page, path) },
                 )
                 is Screen.Finished -> FinishedScreen(
@@ -361,19 +374,27 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
         Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(listOf(Color(0xFFFFE2A8), Color(0xFFFFF7E6))))
-            .padding(14.dp),
+            .padding(horizontal = 14.dp, vertical = 10.dp),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            TextButton(onClick = onBack) { Text("BACK", fontSize = 18.sp, color = Color(0xFF6F4A29), fontWeight = FontWeight.Bold) }
-            Text("Pick a picture", modifier = Modifier.weight(1f), fontSize = 30.sp, fontWeight = FontWeight.Black, color = Color(0xFF6F4A29))
-            Button(
-                onClick = onGallery,
-                shape = RoundedCornerShape(18.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B)),
-            ) {
-                Text("GALLERY", color = Color.White, fontWeight = FontWeight.Black)
-            }
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            HeaderButton("BACK", onBack, Color(0xFFFFF8E2), Color(0xFF6F4A29))
+            HeaderButton("GALLERY", onGallery, Color(0xFF45B86B), Color.White, width = 116.dp)
         }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            "Pick a picture",
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 34.sp,
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.Black,
+            color = Color(0xFF5C3B22),
+            textAlign = TextAlign.Start,
+        )
+        Spacer(Modifier.height(10.dp))
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             for (category in categories) {
                 val chosen = category == selectedCategory
@@ -387,18 +408,18 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
             }
         }
         Spacer(Modifier.height(12.dp))
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.height(128.dp)) {
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.height(104.dp)) {
             items(categories.size) { idx ->
                 val category = categories[idx]
                 Card(
-                    modifier = Modifier.width(210.dp).clickable { selectedCategory = category },
+                    modifier = Modifier.width(176.dp).clickable { selectedCategory = category },
                     colors = CardDefaults.cardColors(containerColor = categoryColor(category)),
                     elevation = CardDefaults.cardElevation(7.dp),
                     shape = RoundedCornerShape(18.dp),
                 ) {
-                    Column(Modifier.padding(16.dp)) {
-                        Text(categoryIcon(category), fontSize = 32.sp)
-                        Text(categoryLabel(category), fontSize = 23.sp, fontWeight = FontWeight.Black, color = Color.White)
+                    Column(Modifier.fillMaxSize().padding(14.dp), verticalArrangement = Arrangement.Center) {
+                        Text(categoryIcon(category), fontSize = 22.sp, fontWeight = FontWeight.Black, color = Color.White)
+                        Text(categoryLabel(category), fontSize = 20.sp, lineHeight = 20.sp, fontWeight = FontWeight.Black, color = Color.White)
                     }
                 }
             }
@@ -414,6 +435,20 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
                 PageCard(page, onOpen)
             }
         }
+    }
+}
+
+@Composable
+fun HeaderButton(label: String, onClick: () -> Unit, color: Color, textColor: Color, width: androidx.compose.ui.unit.Dp = 88.dp) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier.width(width).height(46.dp),
+        shape = RoundedCornerShape(18.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = color),
+        elevation = ButtonDefaults.buttonElevation(5.dp),
+    ) {
+        Text(label, color = textColor, fontSize = 15.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
     }
 }
 
