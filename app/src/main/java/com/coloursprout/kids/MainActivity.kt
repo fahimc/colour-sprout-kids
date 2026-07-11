@@ -1,6 +1,5 @@
 package com.coloursprout.kids
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,7 +8,6 @@ import android.graphics.Canvas as AndroidCanvas
 import android.graphics.Color as AndroidColor
 import android.graphics.Paint
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -72,7 +70,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -86,7 +83,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
@@ -101,17 +97,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.time.Instant
 import kotlin.math.ceil
-import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-import kotlin.math.sin
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -238,13 +231,6 @@ private fun loadBitmap(context: Context, assetPath: String, mutable: Boolean = f
 
 @Composable
 fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
-    val transition = rememberInfiniteTransition(label = "sparkles")
-    val spin by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(2600), RepeatMode.Restart),
-        label = "spin",
-    )
     Box(
         Modifier
             .fillMaxSize()
@@ -256,28 +242,12 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )
-        Canvas(Modifier.fillMaxSize()) {
-            drawCraftBackground(spin)
-        }
-        Text(
-            "SET",
-            modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).background(Color(0xFFFFA12B), CircleShape).size(52.dp),
-            fontSize = 13.sp,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Black,
-            color = Color.White,
-        )
         Column(
             modifier = Modifier.align(Alignment.Center).fillMaxWidth().padding(horizontal = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Image(
-                painter = painterResource(R.drawable.colour_my_world_logo),
-                contentDescription = "Colour My World",
-                modifier = Modifier.fillMaxWidth(0.94f).aspectRatio(960f / 620f),
-                contentScale = ContentScale.Fit,
-            )
-            Spacer(Modifier.height(26.dp))
+            CleanHomeLogo()
+            Spacer(Modifier.height(34.dp))
             GamePlayButton(onPlay)
             Spacer(Modifier.height(14.dp))
             Button(
@@ -289,13 +259,36 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
                 Text("GALLERY", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
             }
         }
-        Card(
-            modifier = Modifier.align(Alignment.BottomStart).padding(16.dp).width(176.dp),
-            shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xEEFFF8E2)),
-            elevation = CardDefaults.cardElevation(8.dp),
-        ) {
-            Text("New pictures", modifier = Modifier.padding(16.dp), color = Color(0xFF7A4D2A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+fun CleanHomeLogo() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(0.88f)
+            .background(Color(0xF7FFFFFF), RoundedCornerShape(34.dp))
+            .border(4.dp, Color.White, RoundedCornerShape(34.dp))
+            .padding(horizontal = 16.dp, vertical = 18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        LogoWord("Colour", listOf(Color(0xFFFF2D8D), Color(0xFFFF8A00), Color(0xFFFFC928), Color(0xFF3AC65D), Color(0xFF1AA7FF), Color(0xFF7A4DFF)), 48.sp)
+        Text("My", color = Color(0xFF8C28D9), fontSize = 34.sp, fontWeight = FontWeight.Black)
+        LogoWord("World", listOf(Color(0xFF1AA7FF), Color(0xFF1167F2), Color(0xFF9B20D9), Color(0xFFFF2D55), Color(0xFFFF8A00)), 50.sp)
+    }
+}
+
+@Composable
+fun LogoWord(text: String, colors: List<Color>, fontSize: androidx.compose.ui.unit.TextUnit) {
+    Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+        text.forEachIndexed { index, ch ->
+            Text(
+                ch.toString(),
+                color = colors[index % colors.size],
+                fontSize = fontSize,
+                fontWeight = FontWeight.Black,
+            )
         }
     }
 }
@@ -321,15 +314,6 @@ fun GamePlayButton(onPlay: () -> Unit) {
             }
             drawPath(tri, Color(0xFF23C564))
         }
-    }
-}
-
-private fun DrawScope.drawCraftBackground(t: Float) {
-    val palette = listOf(Color(0xFFFF7A66), Color(0xFF49A8FF), Color(0xFFFFC94A), Color(0xFF8E65FF), Color(0xFF39B86E))
-    repeat(24) { i ->
-        val x = ((i * 91) % 900).toFloat() / 900f * size.width
-        val y = ((i * 137) % 900).toFloat() / 900f * size.height
-        drawCircle(palette[i % palette.size].copy(alpha = 0.22f), radius = 18f + (i % 5) * 7f, center = Offset(x + sin(t * 6.28f + i) * 18f, y))
     }
 }
 

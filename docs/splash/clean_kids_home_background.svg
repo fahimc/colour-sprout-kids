@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280" role="img" aria-label="Clean pastel kids app background">
+  <rect width="720" height="1280" fill="#fff4dd"/>
+  <path fill="#ddf5ff" d="M-90 76C62 3 202 61 310 30C440-8 536 14 810 86V412C640 376 515 384 407 421C257 472 125 433-90 465Z"/>
+  <path fill="#ffe1f0" d="M-80 302C105 218 237 288 356 246C496 196 608 238 790 318V586C617 536 506 559 371 598C201 646 72 602-80 650Z"/>
+  <path fill="#e7f8d8" d="M0 844C122 800 247 826 360 858C491 895 594 889 720 826V1280H0Z"/>
+  <path fill="#d6f2ec" d="M0 972C117 930 234 960 359 1002C492 1047 595 1041 720 988V1280H0Z"/>
+  <g opacity=".72" fill="#fff">
+    <circle cx="72" cy="202" r="36"/>
+    <circle cx="121" cy="190" r="50"/>
+    <circle cx="182" cy="207" r="34"/>
+    <circle cx="521" cy="176" r="42"/>
+    <circle cx="583" cy="160" r="56"/>
+    <circle cx="650" cy="183" r="38"/>
+  </g>
+  <path d="M132 412C214 254 506 254 588 412" fill="none" stroke="#ffb7d6" stroke-width="22" stroke-linecap="round" opacity=".62"/>
+  <path d="M166 414C231 303 489 303 554 414" fill="none" stroke="#ffd66b" stroke-width="22" stroke-linecap="round" opacity=".64"/>
+  <path d="M202 416C252 352 468 352 518 416" fill="none" stroke="#8fe3a3" stroke-width="22" stroke-linecap="round" opacity=".68"/>
+  <circle cx="93" cy="686" r="18" fill="#ff6f91" opacity=".88"/>
+  <circle cx="624" cy="692" r="20" fill="#ffca3a" opacity=".9"/>
+  <circle cx="584" cy="812" r="14" fill="#39c6d6" opacity=".86"/>
+  <circle cx="132" cy="936" r="16" fill="#8e65ff" opacity=".82"/>
+  <circle cx="530" cy="1030" r="18" fill="#6bd66d" opacity=".86"/>
+</svg>
