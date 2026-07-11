@@ -384,23 +384,6 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
             }
         }
         Spacer(Modifier.height(12.dp))
-        Row(Modifier.fillMaxWidth().height(104.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            visibleCategories.forEach { category ->
-                Card(
-                    modifier = Modifier.weight(1f).fillMaxHeight().clickable { selectedCategory = category },
-                    colors = CardDefaults.cardColors(containerColor = categoryColor(category)),
-                    elevation = CardDefaults.cardElevation(7.dp),
-                    shape = RoundedCornerShape(18.dp),
-                ) {
-                    Column(Modifier.fillMaxSize().padding(14.dp), verticalArrangement = Arrangement.Center) {
-                        Text(categoryIcon(category), fontSize = 22.sp, fontWeight = FontWeight.Black, color = Color.White)
-                        Text(categoryLabel(category), fontSize = 20.sp, lineHeight = 20.sp, fontWeight = FontWeight.Black, color = Color.White)
-                    }
-                }
-            }
-            if (visibleCategories.size < 2) Spacer(Modifier.weight(1f))
-        }
-        Spacer(Modifier.height(12.dp))
         LazyVerticalGrid(
             columns = GridCells.Adaptive(150.dp),
             modifier = Modifier.fillMaxSize(),
@@ -545,29 +528,6 @@ fun SavedArtworkCard(art: SavedArtwork, onOpen: () -> Unit, onExport: () -> Unit
 }
 
 private fun categoryLabel(category: String) = category.split("_").joinToString(" ") { it.replaceFirstChar(Char::titlecase) }
-private fun categoryIcon(category: String) = when (category) {
-    "animals" -> "AN"
-    "dinosaurs" -> "DI"
-    "vehicles" -> "VE"
-    "space" -> "SP"
-    "fantasy" -> "FA"
-    "sea_life" -> "SE"
-    "nature" -> "NA"
-    "cute_food" -> "FO"
-    else -> "GO"
-}
-
-private fun categoryColor(category: String) = when (category) {
-    "animals" -> Color(0xFF5FB96B)
-    "dinosaurs" -> Color(0xFF8B7B43)
-    "vehicles" -> Color(0xFF4E95D9)
-    "space" -> Color(0xFF584DA8)
-    "fantasy" -> Color(0xFFD36CA3)
-    "sea_life" -> Color(0xFF2EA6A6)
-    "nature" -> Color(0xFF83A83D)
-    "cute_food" -> Color(0xFFE07E46)
-    else -> Color(0xFF7D9B4E)
-}
 
 class ColoringSession(private val context: Context, val page: ColoringPage) {
     val lineBitmap: Bitmap = loadBitmap(context, page.lineArtPath)
