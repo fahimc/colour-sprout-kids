@@ -44,6 +44,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -173,26 +174,28 @@ fun ColourSproutApp() {
             navigateBack()
         }
         Surface(Modifier.fillMaxSize(), color = Color(0xFFFFF4D7)) {
-            when (val current = screen) {
-                Screen.Home -> HomeScreen(onPlay = { screen = Screen.Browser }, onGallery = { screen = Screen.Gallery })
-                Screen.Browser -> BrowserScreen(pages, onBack = ::navigateBack, onOpen = { screen = Screen.Coloring(it) }, onGallery = { screen = Screen.Gallery })
-                Screen.Gallery -> GalleryScreen(
-                    pages = pages,
-                    onBack = ::navigateBack,
-                    onOpen = { screen = Screen.Coloring(it) },
-                )
-                is Screen.Coloring -> ColoringScreen(
-                    page = current.page,
-                    onBack = ::navigateBack,
-                    onFinished = { path -> screen = Screen.Finished(current.page, path) },
-                )
-                is Screen.Finished -> FinishedScreen(
-                    page = current.page,
-                    previewPath = current.previewPath,
-                    onContinue = { screen = Screen.Coloring(current.page) },
-                    onNew = { screen = Screen.Browser },
-                    onGallery = { screen = Screen.Gallery },
-                )
+            Box(Modifier.fillMaxSize().safeDrawingPadding()) {
+                when (val current = screen) {
+                    Screen.Home -> HomeScreen(onPlay = { screen = Screen.Browser }, onGallery = { screen = Screen.Gallery })
+                    Screen.Browser -> BrowserScreen(pages, onBack = ::navigateBack, onOpen = { screen = Screen.Coloring(it) }, onGallery = { screen = Screen.Gallery })
+                    Screen.Gallery -> GalleryScreen(
+                        pages = pages,
+                        onBack = ::navigateBack,
+                        onOpen = { screen = Screen.Coloring(it) },
+                    )
+                    is Screen.Coloring -> ColoringScreen(
+                        page = current.page,
+                        onBack = ::navigateBack,
+                        onFinished = { path -> screen = Screen.Finished(current.page, path) },
+                    )
+                    is Screen.Finished -> FinishedScreen(
+                        page = current.page,
+                        previewPath = current.previewPath,
+                        onContinue = { screen = Screen.Coloring(current.page) },
+                        onNew = { screen = Screen.Browser },
+                        onGallery = { screen = Screen.Gallery },
+                    )
+                }
             }
         }
     }
