@@ -557,6 +557,12 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
         return if (completed.value) exportPng(context, page, composeFinal())?.toString() else null
     }
 
+    fun saveColoredArtwork(): String? {
+        completed.value = true
+        ProgressStore.save(context, page.id, paintBitmap, completed.value, regionColours)
+        return exportPng(context, page, composeFinal())?.toString()
+    }
+
     fun composeFinal(): Bitmap {
         val out = Bitmap.createBitmap(lineBitmap.width, lineBitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = AndroidCanvas(out)
@@ -604,6 +610,15 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
     var showMixer by remember { mutableStateOf(false) }
     val config = LocalConfiguration.current
     val landscape = config.screenWidthDp > config.screenHeightDp
+    fun saveArtwork(showFinished: Boolean = false) {
+        val path = session.saveColoredArtwork()
+        Toast.makeText(
+            context,
+            if (path != null) "Saved coloured picture to gallery" else "Could not save picture",
+            Toast.LENGTH_SHORT,
+        ).show()
+        if (showFinished) onFinished(path)
+    }
 
     if (showClear) {
         AlertDialog(
@@ -624,8 +639,7 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             ToolShelf(tool, onTool = { tool = it }, onBack = onBack, onSave = {
-                session.save(false)
-                Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                saveArtwork()
             })
             ColoringCanvas(
                 modifier = Modifier.weight(1f).fillMaxHeight(),
@@ -661,9 +675,7 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                 onClearArea = { session.clearRegion(session.selectedRegion) },
                 onClearAll = { showClear = true },
                 onDone = {
-                    val path = session.save(true)
-                    Toast.makeText(context, "Saved to gallery", Toast.LENGTH_SHORT).show()
-                    onFinished(path)
+                    saveArtwork(showFinished = true)
                 },
             )
         }
@@ -687,8 +699,7 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                 onTool = { tool = it },
                 onBack = onBack,
                 onSave = {
-                    session.save(false)
-                    Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                    saveArtwork()
                 },
                 horizontal = true,
                 modifier = Modifier.align(Alignment.TopCenter),
@@ -711,9 +722,7 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                 onClearAll = { showClear = true },
                 onMixer = { showMixer = true },
                 onDone = {
-                    val path = session.save(true)
-                    Toast.makeText(context, "Saved to gallery", Toast.LENGTH_SHORT).show()
-                    onFinished(path)
+                    saveArtwork(showFinished = true)
                 },
             )
             if (showMixer) {
@@ -751,9 +760,7 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                             onClearArea = { session.clearRegion(session.selectedRegion) },
                             onClearAll = { showClear = true },
                             onDone = {
-                                val path = session.save(true)
-                                Toast.makeText(context, "Saved to gallery", Toast.LENGTH_SHORT).show()
-                                onFinished(path)
+                                saveArtwork(showFinished = true)
                             },
                             compact = true,
                         )
@@ -971,7 +978,7 @@ fun ColorPanel(
             MiniButton("RE", onRedo)
             MiniButton("CLR", onClearArea)
             MiniButton("ALL", onClearAll)
-            MiniButton("OK", onDone, Color(0xFF45B86B))
+            MiniButton("SAVE", onDone, Color(0xFF45B86B))
         }
     }
 }
@@ -979,7 +986,7 @@ fun ColorPanel(
 @Composable
 fun MiniButton(label: String, onClick: () -> Unit, color: Color = Color(0xFFFFF5D7)) {
     Button(onClick = onClick, shape = CircleShape, modifier = Modifier.size(42.dp), contentPadding = ButtonDefaults.ContentPadding, colors = ButtonDefaults.buttonColors(containerColor = color)) {
-        Text(label, color = Color(0xFF5C3B22), fontWeight = FontWeight.Black)
+        Text(label, color = Color(0xFF5C3B22), fontWeight = FontWeight.Black, fontSize = if (label.length > 2) 10.sp else 14.sp, textAlign = TextAlign.Center)
     }
 }
 
@@ -1069,7 +1076,7 @@ fun CompactColorBar(
                 }
             }
             MiniButton("MIX", onMixer, Color(0xFFFFC94A))
-            MiniButton("OK", onDone, Color(0xFF45B86B))
+            MiniButton("SAVE", onDone, Color(0xFF45B86B))
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Hue", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(30.dp))

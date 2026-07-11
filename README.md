@@ -34,12 +34,12 @@ When the child taps the canvas, screen coordinates are mapped to original image 
 
 ## Progress And Export
 
-Progress is saved in app-private storage:
+Progress is saved automatically in app-private storage:
 
 - A PNG paint layer for brush/stroke work.
 - A JSON progress record with `pageId`, `regionColours`, `paintLayerPath`, `lastEdited`, and `completed`.
 
-Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/Colour My World` through `MediaStore`; older devices use the app external files directory.
+The visible `SAVE` buttons save the fully coloured picture to the device gallery. Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/Colour My World` through `MediaStore`; older devices use the app external files directory.
 
 ## Run The Asset Pipeline
 
