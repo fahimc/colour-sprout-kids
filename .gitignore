@@ -4,6 +4,8 @@ local.properties
 build/
 app/build/
 release/
+play-store/**/*.aab
+play-store/**/*.apk
 *.iml
 *.jks
 *.keystore

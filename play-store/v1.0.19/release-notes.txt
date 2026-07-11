@@ -1,0 +1,7 @@
+First Play Store-ready release.
+
+- Kid-friendly offline colouring game.
+- 30 starter colouring pages across multiple categories.
+- Tap-to-fill, brush, crayon, eraser, undo, redo, clear, save, and gallery export.
+- Pinch-to-zoom support for small colouring areas.
+- No ads, no analytics, no account, and no external tracking.
