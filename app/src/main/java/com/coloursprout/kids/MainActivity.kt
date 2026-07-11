@@ -263,6 +263,36 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
                 Text("GALLERY", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
             }
         }
+        SplashCreditBadge(Modifier.align(Alignment.BottomCenter).padding(horizontal = 18.dp, vertical = 18.dp))
+    }
+}
+
+@Composable
+fun SplashCreditBadge(modifier: Modifier = Modifier) {
+    val logoFont = FontFamily(Font(R.font.super_bubble))
+    Column(
+        modifier = modifier
+            .background(Color(0xECFFFFFF), RoundedCornerShape(24.dp))
+            .border(3.dp, Color.White, RoundedCornerShape(24.dp))
+            .padding(horizontal = 24.dp, vertical = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            "Remetheia",
+            color = Color(0xFF7A2BCE),
+            fontSize = 24.sp,
+            lineHeight = 25.sp,
+            fontFamily = logoFont,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            "The Game Maker",
+            color = Color(0xFF5C3B22),
+            fontSize = 13.sp,
+            lineHeight = 15.sp,
+            fontWeight = FontWeight.Black,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
