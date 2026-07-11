@@ -94,7 +94,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
@@ -272,7 +271,12 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
             modifier = Modifier.align(Alignment.Center).fillMaxWidth().padding(horizontal = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            BubblyTitle()
+            Image(
+                painter = painterResource(R.drawable.colour_my_world_logo),
+                contentDescription = "Colour My World",
+                modifier = Modifier.fillMaxWidth(0.92f).height(190.dp),
+                contentScale = ContentScale.Fit,
+            )
             Spacer(Modifier.height(26.dp))
             GamePlayButton(onPlay)
             Spacer(Modifier.height(14.dp))
@@ -293,42 +297,6 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
         ) {
             Text("New pictures", modifier = Modifier.padding(16.dp), color = Color(0xFF7A4D2A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
-    }
-}
-
-@Composable
-fun BubblyTitle() {
-    val title = "Colour\nMy World"
-    Box(contentAlignment = Alignment.Center) {
-        Text(
-            title,
-            modifier = Modifier.offset(5.dp, 7.dp),
-            color = Color(0xFF1B4E87),
-            fontWeight = FontWeight.Black,
-            fontFamily = FontFamily.Cursive,
-            fontSize = 54.sp,
-            lineHeight = 50.sp,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            title,
-            modifier = Modifier.offset(0.dp, 3.dp),
-            color = Color.White,
-            fontWeight = FontWeight.Black,
-            fontFamily = FontFamily.Cursive,
-            fontSize = 58.sp,
-            lineHeight = 52.sp,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            title,
-            color = Color(0xFFFF3B30),
-            fontWeight = FontWeight.Black,
-            fontFamily = FontFamily.Cursive,
-            fontSize = 56.sp,
-            lineHeight = 51.sp,
-            textAlign = TextAlign.Center,
-        )
     }
 }
 

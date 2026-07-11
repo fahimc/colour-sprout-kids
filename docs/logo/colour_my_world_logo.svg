@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-label="Colour My World logo">
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#5c3b22" flood-opacity=".32"/>
+    </filter>
+    <linearGradient id="badge" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#ffe7a8"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#softShadow)">
+    <path fill="#ff5f6d" d="M92 118c-25-36 38-84 78-52 31-54 111-41 126 16 51-30 112 13 99 70 58 11 66 92 7 116 13 60-64 99-108 55-38 47-115 24-118-37-51 27-111-18-95-73-49-28-39-91 11-95z"/>
+    <path fill="#28c76f" d="M548 64c36-46 113-23 116 35 55-22 111 35 83 88 60 24 56 109-8 127 2 62-82 85-119 34-46 36-117 0-111-58-57 4-94-62-59-107-37-47-1-116 98-119z"/>
+    <path fill="#3ba7ff" d="M250 277c37-38 107-18 118 34 45-22 94 26 71 71H200c-18-42 7-88 50-105z"/>
+    <path fill="url(#badge)" stroke="#ffffff" stroke-width="16" d="M118 78h724c39 0 70 31 70 70v150c0 39-31 70-70 70H118c-39 0-70-31-70-70V148c0-39 31-70 70-70z"/>
+  </g>
+  <text x="480" y="198" text-anchor="middle" font-family="'Comic Sans MS','Arial Rounded MT Bold',Arial,sans-serif" font-weight="900" font-size="96" fill="#ffffff" stroke="#4a2f92" stroke-width="16" paint-order="stroke">COLOUR</text>
+  <text x="480" y="198" text-anchor="middle" font-family="'Comic Sans MS','Arial Rounded MT Bold',Arial,sans-serif" font-weight="900" font-size="96" fill="#ff4f6d">COLOUR</text>
+  <text x="480" y="292" text-anchor="middle" font-family="'Comic Sans MS','Arial Rounded MT Bold',Arial,sans-serif" font-weight="900" font-size="78" fill="#ffffff" stroke="#1b6ac9" stroke-width="14" paint-order="stroke">MY WORLD</text>
+  <text x="480" y="292" text-anchor="middle" font-family="'Comic Sans MS','Arial Rounded MT Bold',Arial,sans-serif" font-weight="900" font-size="78" fill="#28c76f">MY WORLD</text>
+  <path fill="#ffd43b" stroke="#ffffff" stroke-width="6" d="M768 33l16 33 36 5-26 25 6 35-32-17-32 17 6-35-26-25 36-5z"/>
+  <path fill="#ff8a00" stroke="#ffffff" stroke-width="5" d="M140 34l13 26 29 4-21 20 5 29-26-14-26 14 5-29-21-20 29-4z"/>
+  <path fill="#5b3df5" d="M736 320l93-40 16 37-93 40z"/>
+  <path fill="#ffcc4d" d="M829 280l34-15 16 37-34 15z"/>
+  <path fill="#33220f" d="M863 265l27-12-11 49z"/>
+</svg>

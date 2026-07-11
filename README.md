@@ -5,6 +5,7 @@ Colour My World is a kid-friendly Android colouring-book game built with Kotlin,
 ## What Is Included
 
 - Bright splash/home screen with a cartoon vector art-room background and large game-style play button.
+- Professional kid-friendly SVG logo source with a native Android vector drawable used on the splash screen.
 - Category browser with 32 starter colouring pages across animals, dinosaurs, vehicles, space, fantasy, sea life, nature, and cute food.
 - Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, pinch zoom, pan, undo, redo, clear area, clear page, save, in-app gallery, and export PNG.
 - Mask-constrained colouring so paint stays inside the line-art regions.
