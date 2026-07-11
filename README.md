@@ -6,7 +6,7 @@ Colour My World is a kid-friendly Android colouring-book game built with Kotlin,
 
 - Bright splash/home screen with a cartoon vector art-room background and large game-style play button.
 - Category browser with 32 starter colouring pages across animals, dinosaurs, vehicles, space, fantasy, sea life, nature, and cute food.
-- Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, undo, redo, clear area, clear page, save, and export PNG.
+- Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, pinch zoom, pan, undo, redo, clear area, clear page, save, and export PNG.
 - Mask-constrained colouring so paint stays inside the line-art regions.
 - Local progress saving per page.
 - Export of final artwork as PNG.
@@ -31,6 +31,8 @@ Rendering order is:
 4. Compose UI controls.
 
 When the child taps the canvas, screen coordinates are mapped to original image coordinates. The app reads the pixel in `mask.png`, resolves the internal region id, and fills the cached pixel list for that region on the user paint layer. Brush tools clip every brush sample to the region where the stroke started, so strokes do not bleed into neighboring areas.
+
+The canvas supports two-finger pinch zoom and two-finger panning. Touches are mapped through the current zoomed/panned image rectangle before mask lookup, so small regions can be coloured accurately while zoomed in.
 
 ## Progress And Export
 

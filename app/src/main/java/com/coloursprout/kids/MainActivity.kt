@@ -30,6 +30,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.calculateCentroid
+import androidx.compose.foundation.gestures.calculatePan
+import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,6 +88,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -843,6 +848,8 @@ fun ColoringCanvas(
     val paintImage: ImageBitmap = remember(version) { session.paintBitmap.asImageBitmap() }
     val lineImage = remember(session.page.id) { session.lineBitmap.asImageBitmap() }
     var lastPoint by remember { mutableStateOf<Offset?>(null) }
+    var zoom by remember(session.page.id) { mutableFloatStateOf(1f) }
+    var pan by remember(session.page.id) { mutableStateOf(Offset.Zero) }
 
     Box(
         modifier
@@ -856,62 +863,115 @@ fun ColoringCanvas(
                 .background(Color(0xFFFFFEFA), RoundedCornerShape(12.dp))
                 .border(6.dp, Color(0xFFE5D0A6), RoundedCornerShape(12.dp))
                 .pointerInput(tool, selectedColor, brushSize, canvasSize) {
-                    detectTapGestures { offset ->
-                        val point = mapToImage(offset, canvasSize, session.lineBitmap.width, session.lineBitmap.height) ?: return@detectTapGestures
-                        when (tool) {
-                            Tool.Bucket -> session.fillRegion(session.regionAt(point.first, point.second), selectedColor)
-                            Tool.EyeDropper -> session.eyedrop(point.first, point.second)?.let(onPickColor)
-                            Tool.Eraser -> session.clearRegion(session.regionAt(point.first, point.second))
-                            else -> {
-                                session.beginStroke()
-                                session.drawBrush(point.first, point.second, brushSize, selectedColor, tool)
-                                session.endStroke(selectedColor, tool)
+                    awaitEachGesture {
+                        var strokeStarted = false
+                        var didMove = false
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            val pressed = event.changes.filter { it.pressed }
+                            if (pressed.isEmpty()) {
+                                if (strokeStarted) session.endStroke(selectedColor, tool)
+                                if (!strokeStarted && !didMove && lastPoint != null) {
+                                    val point = mapToImage(lastPoint!!, canvasSize, session.lineBitmap.width, session.lineBitmap.height, zoom, pan)
+                                    if (point != null) {
+                                        when (tool) {
+                                            Tool.Bucket -> session.fillRegion(session.regionAt(point.first, point.second), selectedColor)
+                                            Tool.EyeDropper -> session.eyedrop(point.first, point.second)?.let(onPickColor)
+                                            Tool.Eraser -> session.clearRegion(session.regionAt(point.first, point.second))
+                                            else -> {
+                                                session.beginStroke()
+                                                session.drawBrush(point.first, point.second, brushSize, selectedColor, tool)
+                                                session.endStroke(selectedColor, tool)
+                                            }
+                                        }
+                                    }
+                                }
+                                lastPoint = null
+                                break
+                            }
+
+                            if (pressed.size > 1) {
+                                if (strokeStarted) {
+                                    session.endStroke(selectedColor, tool)
+                                    strokeStarted = false
+                                }
+                                val oldZoom = zoom
+                                val newZoom = (zoom * event.calculateZoom()).coerceIn(1f, 5f)
+                                val centroid = event.calculateCentroid(useCurrent = false)
+                                val canvasCenter = Offset(canvasSize.width / 2f, canvasSize.height / 2f)
+                                val zoomFocusShift = (centroid - canvasCenter - pan) * (1f - newZoom / oldZoom)
+                                zoom = newZoom
+                                pan = clampPan(
+                                    canvasSize.width.toFloat(),
+                                    canvasSize.height.toFloat(),
+                                    session.lineBitmap.width,
+                                    session.lineBitmap.height,
+                                    zoom,
+                                    pan + event.calculatePan() + zoomFocusShift,
+                                )
+                                lastPoint = null
+                                didMove = true
+                                event.changes.forEach { it.consume() }
+                            } else {
+                                val current = pressed.first().position
+                                val previous = lastPoint
+                                if (previous == null) {
+                                    lastPoint = current
+                                } else if (tool !in listOf(Tool.Bucket, Tool.EyeDropper)) {
+                                    if (!strokeStarted) {
+                                        session.beginStroke()
+                                        val start = mapToImage(previous, canvasSize, session.lineBitmap.width, session.lineBitmap.height, zoom, pan)
+                                        if (start != null) {
+                                            session.activeRegion = session.regionAt(start.first, start.second)
+                                            session.drawBrush(start.first, start.second, brushSize, selectedColor, tool)
+                                        }
+                                        strokeStarted = true
+                                    }
+                                    val steps = max(1, ceil((current - previous).getDistance() / max(3f, brushSize / 2f)).toInt())
+                                    for (i in 1..steps) {
+                                        val t = i / steps.toFloat()
+                                        val mixed = Offset(previous.x + (current.x - previous.x) * t, previous.y + (current.y - previous.y) * t)
+                                        val p = mapToImage(mixed, canvasSize, session.lineBitmap.width, session.lineBitmap.height, zoom, pan)
+                                        if (p != null) session.drawBrush(p.first, p.second, brushSize, selectedColor, tool)
+                                    }
+                                    lastPoint = current
+                                    didMove = true
+                                    pressed.first().consume()
+                                } else {
+                                    if ((current - previous).getDistance() > 8f) didMove = true
+                                    lastPoint = current
+                                }
                             }
                         }
                     }
-                }
-                .pointerInput(tool, selectedColor, brushSize, canvasSize) {
-                    detectDragGestures(
-                        onDragStart = { offset ->
-                            session.beginStroke()
-                            lastPoint = offset
-                            val p = mapToImage(offset, canvasSize, session.lineBitmap.width, session.lineBitmap.height)
-                            if (p != null && tool !in listOf(Tool.Bucket, Tool.EyeDropper)) {
-                                session.activeRegion = session.regionAt(p.first, p.second)
-                                session.drawBrush(p.first, p.second, brushSize, selectedColor, tool)
-                            }
-                        },
-                        onDragEnd = {
-                            session.endStroke(selectedColor, tool)
-                            lastPoint = null
-                        },
-                        onDragCancel = {
-                            session.endStroke(selectedColor, tool)
-                            lastPoint = null
-                        },
-                        onDrag = { change, _ ->
-                            if (tool in listOf(Tool.Bucket, Tool.EyeDropper)) return@detectDragGestures
-                            val previous = lastPoint ?: change.position
-                            val current = change.position
-                            val steps = max(1, ceil((current - previous).getDistance() / max(3f, brushSize / 2f)).toInt())
-                            for (i in 1..steps) {
-                                val t = i / steps.toFloat()
-                                val mixed = Offset(previous.x + (current.x - previous.x) * t, previous.y + (current.y - previous.y) * t)
-                                val p = mapToImage(mixed, canvasSize, session.lineBitmap.width, session.lineBitmap.height)
-                                if (p != null) session.drawBrush(p.first, p.second, brushSize, selectedColor, tool)
-                            }
-                            lastPoint = current
-                        },
-                    )
                 },
         ) {
             canvasSize = IntSize(size.width.roundToInt(), size.height.roundToInt())
-            val dst = fitRect(size.width, size.height, session.lineBitmap.width, session.lineBitmap.height)
+            pan = clampPan(size.width, size.height, session.lineBitmap.width, session.lineBitmap.height, zoom, pan)
+            val dst = transformedRect(size.width, size.height, session.lineBitmap.width, session.lineBitmap.height, zoom, pan)
             drawRect(Color.White, topLeft = dst.topLeft, size = dst.size)
             drawImage(paintImage, dstOffset = androidx.compose.ui.unit.IntOffset(dst.left.roundToInt(), dst.top.roundToInt()), dstSize = IntSize(dst.width.roundToInt(), dst.height.roundToInt()))
             drawImage(lineImage, dstOffset = androidx.compose.ui.unit.IntOffset(dst.left.roundToInt(), dst.top.roundToInt()), dstSize = IntSize(dst.width.roundToInt(), dst.height.roundToInt()))
             if (session.selectedRegion != 0) {
                 drawRect(Color(0x3345B86B), topLeft = Offset(dst.left, dst.top), size = dst.size)
+            }
+            if (zoom > 1.02f) {
+                drawRoundRect(
+                    Color(0xCC5C3B22),
+                    topLeft = Offset(18f, 18f),
+                    size = androidx.compose.ui.geometry.Size(104f, 42f),
+                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(21f, 21f),
+                )
+                drawContext.canvas.nativeCanvas.drawText(
+                    "${(zoom * 100).roundToInt()}%",
+                    42f,
+                    46f,
+                    Paint().apply {
+                        color = AndroidColor.WHITE
+                        textSize = 24f
+                        isFakeBoldText = true
+                    },
+                )
             }
         }
     }
@@ -1030,9 +1090,34 @@ private fun fitRect(canvasWidth: Float, canvasHeight: Float, imageWidth: Int, im
     return Rect(left, top, left + w, top + h)
 }
 
-private fun mapToImage(offset: Offset, canvasSize: IntSize, imageWidth: Int, imageHeight: Int): Pair<Int, Int>? {
+private fun transformedRect(canvasWidth: Float, canvasHeight: Float, imageWidth: Int, imageHeight: Int, zoom: Float, pan: Offset): Rect {
+    val base = fitRect(canvasWidth, canvasHeight, imageWidth, imageHeight)
+    val w = base.width * zoom
+    val h = base.height * zoom
+    val cx = canvasWidth / 2f + pan.x
+    val cy = canvasHeight / 2f + pan.y
+    return Rect(cx - w / 2f, cy - h / 2f, cx + w / 2f, cy + h / 2f)
+}
+
+private fun clampPan(canvasWidth: Float, canvasHeight: Float, imageWidth: Int, imageHeight: Int, zoom: Float, pan: Offset): Offset {
+    val base = fitRect(canvasWidth, canvasHeight, imageWidth, imageHeight)
+    val zoomedWidth = base.width * zoom
+    val zoomedHeight = base.height * zoom
+    val maxX = max(0f, (zoomedWidth - canvasWidth) / 2f)
+    val maxY = max(0f, (zoomedHeight - canvasHeight) / 2f)
+    return Offset(pan.x.coerceIn(-maxX, maxX), pan.y.coerceIn(-maxY, maxY))
+}
+
+private fun mapToImage(
+    offset: Offset,
+    canvasSize: IntSize,
+    imageWidth: Int,
+    imageHeight: Int,
+    zoom: Float = 1f,
+    pan: Offset = Offset.Zero,
+): Pair<Int, Int>? {
     if (canvasSize.width == 0 || canvasSize.height == 0) return null
-    val rect = fitRect(canvasSize.width.toFloat(), canvasSize.height.toFloat(), imageWidth, imageHeight)
+    val rect = transformedRect(canvasSize.width.toFloat(), canvasSize.height.toFloat(), imageWidth, imageHeight, zoom, pan)
     if (!rect.contains(offset)) return null
     val x = ((offset.x - rect.left) / rect.width * imageWidth).roundToInt().coerceIn(0, imageWidth - 1)
     val y = ((offset.y - rect.top) / rect.height * imageHeight).roundToInt().coerceIn(0, imageHeight - 1)
