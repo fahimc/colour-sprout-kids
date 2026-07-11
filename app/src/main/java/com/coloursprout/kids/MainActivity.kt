@@ -46,7 +46,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -320,8 +319,16 @@ fun GamePlayButton(onPlay: () -> Unit) {
 @Composable
 fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (ColoringPage) -> Unit, onGallery: () -> Unit) {
     var selectedCategory by remember { mutableStateOf("animals") }
+    var categoryPageIndex by remember { mutableIntStateOf(0) }
     val categories = pages.map { it.category }.distinct().ifEmpty { listOf("animals") }
+    val maxCategoryPage = max(0, (categories.size - 1) / 2)
+    val categoryPage = categoryPageIndex.coerceIn(0, maxCategoryPage)
+    val visibleCategories = categories.drop(categoryPage * 2).take(2)
     val visible = pages.filter { it.category == selectedCategory }
+    LaunchedEffect(categories) {
+        if (selectedCategory !in categories) selectedCategory = categories.first()
+        if (categoryPageIndex > maxCategoryPage) categoryPageIndex = maxCategoryPage
+    }
     Column(
         Modifier
             .fillMaxSize()
@@ -347,24 +354,40 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
             textAlign = TextAlign.Start,
         )
         Spacer(Modifier.height(10.dp))
-        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            for (category in categories) {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            CategoryArrowButton("<", enabled = categoryPage > 0) {
+                val nextPage = (categoryPage - 1).coerceAtLeast(0)
+                categoryPageIndex = nextPage
+                selectedCategory = categories[nextPage * 2]
+            }
+            for (category in visibleCategories) {
                 val chosen = category == selectedCategory
                 Button(
                     onClick = { selectedCategory = category },
+                    modifier = Modifier.weight(1f).height(52.dp),
                     shape = RoundedCornerShape(24.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = if (chosen) Color(0xFF4CAF6C) else Color(0xFFFFF8E2)),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                 ) {
-                    Text(categoryLabel(category), color = if (chosen) Color.White else Color(0xFF6F4A29), fontWeight = FontWeight.Bold)
+                    Text(categoryLabel(category), color = if (chosen) Color.White else Color(0xFF6F4A29), fontWeight = FontWeight.Bold, fontSize = 16.sp, textAlign = TextAlign.Center)
                 }
+            }
+            if (visibleCategories.size < 2) Spacer(Modifier.weight(1f))
+            CategoryArrowButton(">", enabled = categoryPage < maxCategoryPage) {
+                val nextPage = (categoryPage + 1).coerceAtMost(maxCategoryPage)
+                categoryPageIndex = nextPage
+                selectedCategory = categories[nextPage * 2]
             }
         }
         Spacer(Modifier.height(12.dp))
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.height(104.dp)) {
-            items(categories.size) { idx ->
-                val category = categories[idx]
+        Row(Modifier.fillMaxWidth().height(104.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            visibleCategories.forEach { category ->
                 Card(
-                    modifier = Modifier.width(176.dp).clickable { selectedCategory = category },
+                    modifier = Modifier.weight(1f).fillMaxHeight().clickable { selectedCategory = category },
                     colors = CardDefaults.cardColors(containerColor = categoryColor(category)),
                     elevation = CardDefaults.cardElevation(7.dp),
                     shape = RoundedCornerShape(18.dp),
@@ -375,6 +398,7 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
                     }
                 }
             }
+            if (visibleCategories.size < 2) Spacer(Modifier.weight(1f))
         }
         Spacer(Modifier.height(12.dp))
         LazyVerticalGrid(
@@ -401,6 +425,26 @@ fun HeaderButton(label: String, onClick: () -> Unit, color: Color, textColor: Co
         elevation = ButtonDefaults.buttonElevation(5.dp),
     ) {
         Text(label, color = textColor, fontSize = 15.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
+    }
+}
+
+@Composable
+fun CategoryArrowButton(label: String, enabled: Boolean, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.width(44.dp).height(52.dp),
+        shape = RoundedCornerShape(18.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFFFF8E2),
+            disabledContainerColor = Color(0x66FFF8E2),
+            contentColor = Color(0xFF6F4A29),
+            disabledContentColor = Color(0x776F4A29),
+        ),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp, disabledElevation = 0.dp),
+    ) {
+        Text(label, fontSize = 24.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
     }
 }
 
@@ -683,7 +727,7 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
     private fun rememberColor(color: Color) {
         recentColors.remove(color)
         recentColors.add(0, color)
-        while (recentColors.size > 7) recentColors.removeLast()
+        while (recentColors.size > 7) recentColors.removeAt(recentColors.lastIndex)
     }
 
     private fun changed() {
