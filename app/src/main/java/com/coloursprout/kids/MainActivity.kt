@@ -133,6 +133,12 @@ data class ColoringPage(
     val tags: List<String>,
 )
 
+data class SavedArtwork(
+    val page: ColoringPage,
+    val galleryPath: String,
+    val lastEdited: String,
+)
+
 enum class Tool(val label: String) {
     Bucket("Fill"),
     Brush("Brush"),
@@ -146,6 +152,7 @@ enum class Tool(val label: String) {
 private sealed interface Screen {
     data object Home : Screen
     data object Browser : Screen
+    data object Gallery : Screen
     data class Coloring(val page: ColoringPage) : Screen
     data class Finished(val page: ColoringPage, val previewPath: String?) : Screen
 }
@@ -161,8 +168,13 @@ fun ColourSproutApp() {
     MaterialTheme {
         Surface(Modifier.fillMaxSize(), color = Color(0xFFFFF4D7)) {
             when (val current = screen) {
-                Screen.Home -> HomeScreen(onPlay = { screen = Screen.Browser })
-                Screen.Browser -> BrowserScreen(pages, onBack = { screen = Screen.Home }, onOpen = { screen = Screen.Coloring(it) })
+                Screen.Home -> HomeScreen(onPlay = { screen = Screen.Browser }, onGallery = { screen = Screen.Gallery })
+                Screen.Browser -> BrowserScreen(pages, onBack = { screen = Screen.Home }, onOpen = { screen = Screen.Coloring(it) }, onGallery = { screen = Screen.Gallery })
+                Screen.Gallery -> GalleryScreen(
+                    pages = pages,
+                    onBack = { screen = Screen.Browser },
+                    onOpen = { screen = Screen.Coloring(it) },
+                )
                 is Screen.Coloring -> ColoringScreen(
                     page = current.page,
                     onBack = { screen = Screen.Browser },
@@ -173,6 +185,7 @@ fun ColourSproutApp() {
                     previewPath = current.previewPath,
                     onContinue = { screen = Screen.Coloring(current.page) },
                     onNew = { screen = Screen.Browser },
+                    onGallery = { screen = Screen.Gallery },
                 )
             }
         }
@@ -212,7 +225,7 @@ private fun loadBitmap(context: Context, assetPath: String, mutable: Boolean = f
 }
 
 @Composable
-fun HomeScreen(onPlay: () -> Unit) {
+fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
     val transition = rememberInfiniteTransition(label = "sparkles")
     val spin by transition.animateFloat(
         initialValue = 0f,
@@ -249,6 +262,15 @@ fun HomeScreen(onPlay: () -> Unit) {
             BubblyTitle()
             Spacer(Modifier.height(26.dp))
             GamePlayButton(onPlay)
+            Spacer(Modifier.height(14.dp))
+            Button(
+                onClick = onGallery,
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B)),
+                elevation = ButtonDefaults.buttonElevation(8.dp),
+            ) {
+                Text("GALLERY", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
+            }
         }
         Card(
             modifier = Modifier.align(Alignment.BottomStart).padding(16.dp).width(176.dp),
@@ -331,7 +353,7 @@ private fun DrawScope.drawCraftBackground(t: Float) {
 }
 
 @Composable
-fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (ColoringPage) -> Unit) {
+fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (ColoringPage) -> Unit, onGallery: () -> Unit) {
     var selectedCategory by remember { mutableStateOf("animals") }
     val categories = pages.map { it.category }.distinct().ifEmpty { listOf("animals") }
     val visible = pages.filter { it.category == selectedCategory }
@@ -343,7 +365,14 @@ fun BrowserScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (Colori
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             TextButton(onClick = onBack) { Text("BACK", fontSize = 18.sp, color = Color(0xFF6F4A29), fontWeight = FontWeight.Bold) }
-            Text("Pick a picture", fontSize = 30.sp, fontWeight = FontWeight.Black, color = Color(0xFF6F4A29))
+            Text("Pick a picture", modifier = Modifier.weight(1f), fontSize = 30.sp, fontWeight = FontWeight.Black, color = Color(0xFF6F4A29))
+            Button(
+                onClick = onGallery,
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B)),
+            ) {
+                Text("GALLERY", color = Color.White, fontWeight = FontWeight.Black)
+            }
         }
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             for (category in categories) {
@@ -406,6 +435,79 @@ fun PageCard(page: ColoringPage, onOpen: (ColoringPage) -> Unit) {
             Text(page.title, modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth(), textAlign = TextAlign.Center, color = Color(0xFF5E442C), fontWeight = FontWeight.Bold)
             if (ProgressStore.isCompleted(context, page.id)) {
                 Text("OK", modifier = Modifier.align(Alignment.TopEnd).background(Color(0xFF46B96A), CircleShape).size(28.dp), color = Color.White, textAlign = TextAlign.Center, fontWeight = FontWeight.Black, fontSize = 10.sp)
+            }
+        }
+    }
+}
+
+@Composable
+fun GalleryScreen(pages: List<ColoringPage>, onBack: () -> Unit, onOpen: (ColoringPage) -> Unit) {
+    val context = LocalContext.current
+    var refresh by remember { mutableIntStateOf(0) }
+    val saved = remember(pages, refresh) { ProgressStore.gallery(context, pages) }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Brush.verticalGradient(listOf(Color(0xFFFFE2A8), Color(0xFFBFE8C7))))
+            .padding(14.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextButton(onClick = onBack) { Text("BACK", fontSize = 18.sp, color = Color(0xFF6F4A29), fontWeight = FontWeight.Bold) }
+            Text("Saved Gallery", modifier = Modifier.weight(1f), fontSize = 30.sp, fontWeight = FontWeight.Black, color = Color(0xFF6F4A29))
+        }
+        Spacer(Modifier.height(10.dp))
+        if (saved.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Save a coloured picture first", color = Color(0xFF6F4A29), fontSize = 22.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
+            }
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(170.dp),
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(saved, key = { "${it.page.id}-${it.lastEdited}" }) { art ->
+                    SavedArtworkCard(
+                        art = art,
+                        onOpen = { onOpen(art.page) },
+                        onExport = {
+                            val uri = ProgressStore.exportSaved(context, art.page)
+                            Toast.makeText(
+                                context,
+                                if (uri != null) "Exported PNG to Pictures/Colour My World" else "Could not export picture",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            refresh++
+                        },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SavedArtworkCard(art: SavedArtwork, onOpen: () -> Unit, onExport: () -> Unit) {
+    val preview = remember(art.galleryPath, art.lastEdited) { BitmapFactory.decodeFile(art.galleryPath)?.asImageBitmap() }
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFEF7)),
+        elevation = CardDefaults.cardElevation(7.dp),
+    ) {
+        Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            if (preview != null) {
+                Image(preview, contentDescription = art.page.title, modifier = Modifier.fillMaxWidth().aspectRatio(1f).clip(RoundedCornerShape(10.dp)), contentScale = ContentScale.Fit)
+            } else {
+                Box(Modifier.fillMaxWidth().aspectRatio(1f).background(Color(0xFFFFF2D6), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
+                    Text("Saved", color = Color(0xFF6F4A29), fontWeight = FontWeight.Black)
+                }
+            }
+            Text(art.page.title, color = Color(0xFF5E442C), fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                MiniButton("COLOUR", onOpen, Color(0xFFFFC94A), width = 74.dp)
+                MiniButton("EXPORT", onExport, Color(0xFF45B86B), width = 74.dp)
             }
         }
     }
@@ -561,13 +663,13 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
     fun save(completedFlag: Boolean = false): String? {
         completed.value = completedFlag || completed.value
         ProgressStore.save(context, page.id, paintBitmap, completed.value, regionColours)
-        return if (completed.value) exportPng(context, page, composeFinal())?.toString() else null
+        return if (completed.value) ProgressStore.saveGalleryPreview(context, page, composeFinal())?.absolutePath else null
     }
 
     fun saveColoredArtwork(): String? {
         completed.value = true
         ProgressStore.save(context, page.id, paintBitmap, completed.value, regionColours)
-        return exportPng(context, page, composeFinal())?.toString()
+        return ProgressStore.saveGalleryPreview(context, page, composeFinal())?.absolutePath
     }
 
     fun composeFinal(): Bitmap {
@@ -1089,7 +1191,7 @@ fun MiniButton(label: String, onClick: () -> Unit, color: Color = Color(0xFFFFF5
 }
 
 @Composable
-fun FinishedScreen(page: ColoringPage, previewPath: String?, onContinue: () -> Unit, onNew: () -> Unit) {
+fun FinishedScreen(page: ColoringPage, previewPath: String?, onContinue: () -> Unit, onNew: () -> Unit, onGallery: () -> Unit) {
     val context = LocalContext.current
     val transition = rememberInfiniteTransition(label = "confetti")
     val t by transition.animateFloat(0f, 1f, infiniteRepeatable(tween(1400), RepeatMode.Restart), label = "confetti")
@@ -1110,10 +1212,21 @@ fun FinishedScreen(page: ColoringPage, previewPath: String?, onContinue: () -> U
             Text("Saved!", fontSize = 44.sp, color = Color(0xFF2D6E42), fontWeight = FontWeight.Black)
             Text(page.title, fontSize = 26.sp, color = Color(0xFF5C3B22), fontWeight = FontWeight.Bold)
             Button(onClick = onContinue, shape = RoundedCornerShape(24.dp)) { Text("Continue colouring") }
-            Button(onClick = { Toast.makeText(context, "Artwork is saved in Pictures/Colour My World", Toast.LENGTH_SHORT).show() }, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B))) { Text("Save to gallery") }
-            Button(onClick = { Toast.makeText(context, previewPath ?: "Export PNG saved", Toast.LENGTH_SHORT).show() }, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4E95D9))) { Text("Export PNG") }
+            Button(onClick = onGallery, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B))) { Text("Open gallery") }
+            Button(
+                onClick = {
+                    val uri = ProgressStore.exportSaved(context, page)
+                    Toast.makeText(
+                        context,
+                        if (uri != null) "Exported PNG to Pictures/Colour My World" else "Could not export picture",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                },
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4E95D9)),
+            ) { Text("Export PNG") }
             Button(onClick = onNew, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B5E))) { Text("Start new picture") }
-            Text("Export PNG saved in Pictures/Colour My World", textAlign = TextAlign.Center, color = Color(0xFF5C3B22), fontWeight = FontWeight.Bold)
+            Text("Saved in the app gallery. Export PNG writes to Pictures/Colour My World.", textAlign = TextAlign.Center, color = Color(0xFF5C3B22), fontWeight = FontWeight.Bold)
             if (previewPath != null) Text(previewPath, textAlign = TextAlign.Center, color = Color(0xFF5C3B22), fontSize = 12.sp)
         }
     }
@@ -1222,17 +1335,22 @@ fun CompactColorBar(
 
 object ProgressStore {
     private fun dir(context: Context): File = File(context.filesDir, "progress").also { it.mkdirs() }
+    private fun galleryDir(context: Context): File = File(context.filesDir, "gallery").also { it.mkdirs() }
     private fun png(context: Context, pageId: String) = File(dir(context), "$pageId.png")
     private fun json(context: Context, pageId: String) = File(dir(context), "$pageId.json")
+    private fun galleryPng(context: Context, pageId: String) = File(galleryDir(context), "$pageId-final.png")
 
     fun save(context: Context, pageId: String, paintLayer: Bitmap, completed: Boolean, regionColours: Map<String, String> = emptyMap()) {
         FileOutputStream(png(context, pageId)).use { paintLayer.compress(Bitmap.CompressFormat.PNG, 100, it) }
         val coloursJson = JSONObject()
         regionColours.forEach { (region, color) -> coloursJson.put(region, color) }
+        val old = runCatching { JSONObject(json(context, pageId).readText()) }.getOrNull()
+        val galleryPath = old?.optString("galleryPath").orEmpty().ifBlank { galleryPng(context, pageId).absolutePath }
         json(context, pageId).writeText(
             JSONObject()
                 .put("pageId", pageId)
                 .put("paintLayerPath", png(context, pageId).absolutePath)
+                .put("galleryPath", galleryPath)
                 .put("regionColours", coloursJson)
                 .put("lastEdited", Instant.now().toString())
                 .put("completed", completed)
@@ -1250,6 +1368,53 @@ object ProgressStore {
     fun isCompleted(context: Context, pageId: String): Boolean {
         val file = json(context, pageId)
         return runCatching { JSONObject(file.readText()).optBoolean("completed", false) }.getOrDefault(false)
+    }
+
+    fun saveGalleryPreview(context: Context, page: ColoringPage, bitmap: Bitmap): File? {
+        val out = galleryPng(context, page.id)
+        return runCatching {
+            FileOutputStream(out).use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+            val progress = json(context, page.id)
+            val obj = runCatching { JSONObject(progress.readText()) }.getOrDefault(JSONObject().put("pageId", page.id))
+            obj.put("completed", true)
+                .put("galleryPath", out.absolutePath)
+                .put("lastEdited", Instant.now().toString())
+            progress.writeText(obj.toString(2))
+            out
+        }.getOrNull()
+    }
+
+    fun gallery(context: Context, pages: List<ColoringPage>): List<SavedArtwork> {
+        val byId = pages.associateBy { it.id }
+        return dir(context).listFiles { file -> file.extension == "json" }.orEmpty().mapNotNull { file ->
+            val obj = runCatching { JSONObject(file.readText()) }.getOrNull() ?: return@mapNotNull null
+            if (!obj.optBoolean("completed", false)) return@mapNotNull null
+            val page = byId[obj.optString("pageId")] ?: return@mapNotNull null
+            val path = obj.optString("galleryPath").ifBlank { galleryPng(context, page.id).absolutePath }
+            if (!File(path).exists()) {
+                val composed = composeSavedBitmap(context, page) ?: return@mapNotNull null
+                saveGalleryPreview(context, page, composed)
+            }
+            val finalPath = obj.optString("galleryPath").ifBlank { galleryPng(context, page.id).absolutePath }
+            if (!File(finalPath).exists()) return@mapNotNull null
+            SavedArtwork(page, finalPath, obj.optString("lastEdited"))
+        }.sortedByDescending { it.lastEdited }
+    }
+
+    fun exportSaved(context: Context, page: ColoringPage): Uri? {
+        val bitmap = composeSavedBitmap(context, page) ?: BitmapFactory.decodeFile(galleryPng(context, page.id).absolutePath) ?: return null
+        return exportPng(context, page, bitmap)
+    }
+
+    private fun composeSavedBitmap(context: Context, page: ColoringPage): Bitmap? {
+        val line = runCatching { loadBitmap(context, page.lineArtPath) }.getOrNull() ?: return null
+        val out = Bitmap.createBitmap(line.width, line.height, Bitmap.Config.ARGB_8888)
+        val canvas = AndroidCanvas(out)
+        canvas.drawColor(AndroidColor.WHITE)
+        val savedPaint = BitmapFactory.decodeFile(png(context, page.id).absolutePath)
+        if (savedPaint != null) canvas.drawBitmap(savedPaint, 0f, 0f, null)
+        canvas.drawBitmap(line, 0f, 0f, null)
+        return out
     }
 }
 

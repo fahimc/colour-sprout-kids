@@ -6,7 +6,7 @@ Colour My World is a kid-friendly Android colouring-book game built with Kotlin,
 
 - Bright splash/home screen with a cartoon vector art-room background and large game-style play button.
 - Category browser with 32 starter colouring pages across animals, dinosaurs, vehicles, space, fantasy, sea life, nature, and cute food.
-- Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, pinch zoom, pan, undo, redo, clear area, clear page, save, and export PNG.
+- Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, pinch zoom, pan, undo, redo, clear area, clear page, save, in-app gallery, and export PNG.
 - Mask-constrained colouring so paint stays inside the line-art regions.
 - Local progress saving per page.
 - Export of final artwork as PNG.
@@ -40,8 +40,9 @@ Progress is saved automatically in app-private storage:
 
 - A PNG paint layer for brush/stroke work.
 - A JSON progress record with `pageId`, `regionColours`, `paintLayerPath`, `lastEdited`, and `completed`.
+- A composed gallery PNG for each saved finished artwork.
 
-The visible `SAVE` buttons save the fully coloured picture to the device gallery. Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/Colour My World` through `MediaStore`; older devices use the app external files directory.
+The visible `SAVE` buttons save the fully coloured picture into the app gallery. The Gallery screen shows saved pictures, lets the child continue colouring them, and has an `EXPORT` button for each saved artwork. Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/Colour My World` through `MediaStore`; older devices use the app external files directory.
 
 ## Run The Asset Pipeline
 
