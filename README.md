@@ -1,10 +1,10 @@
-# ColourSprout Kids
+# Colour My World
 
-ColourSprout Kids is a kid-friendly Android colouring-book game built with Kotlin, Android Studio, and Jetpack Compose. It is offline-first, has no ads, no analytics, no accounts, and uses original generated starter art instead of copyrighted brands or characters.
+Colour My World is a kid-friendly Android colouring-book game built with Kotlin, Android Studio, and Jetpack Compose. It is offline-first, has no ads, no analytics, no accounts, and uses original generated starter art instead of copyrighted brands or characters.
 
 ## What Is Included
 
-- Bright splash/home screen with a large play button.
+- Bright splash/home screen with a cartoon vector art-room background and large game-style play button.
 - Category browser with 32 starter colouring pages across animals, dinosaurs, vehicles, space, fantasy, sea life, nature, and cute food.
 - Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, undo, redo, clear area, clear page, save, and export PNG.
 - Mask-constrained colouring so paint stays inside the line-art regions.
@@ -12,6 +12,7 @@ ColourSprout Kids is a kid-friendly Android colouring-book game built with Kotli
 - Export of final artwork as PNG.
 - Asset generator at `tools/fetch_coloring_assets`.
 - License manifest at `app/src/main/assets/licenses.json`.
+- Splash background source note at `docs/splash/SOURCE.md`.
 
 ## Mask-Based Colouring System
 
@@ -38,7 +39,7 @@ Progress is saved in app-private storage:
 - A PNG paint layer for brush/stroke work.
 - A JSON progress record with `pageId`, `regionColours`, `paintLayerPath`, `lastEdited`, and `completed`.
 
-Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/ColourSprout Kids` through `MediaStore`; older devices use the app external files directory.
+Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/Colour My World` through `MediaStore`; older devices use the app external files directory.
 
 ## Run The Asset Pipeline
 

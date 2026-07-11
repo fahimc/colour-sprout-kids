@@ -41,6 +41,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -80,6 +81,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.toArgb
@@ -87,6 +89,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
@@ -216,43 +220,100 @@ fun HomeScreen(onPlay: () -> Unit) {
     Box(
         Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Color(0xFFFFD96F), Color(0xFFFFF0C8), Color(0xFF7DCB8A))))
-            .padding(24.dp),
+            .background(Color(0xFFFFE9B6)),
     ) {
+        Image(
+            painter = painterResource(R.drawable.splash_art_room),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
+        )
         Canvas(Modifier.fillMaxSize()) {
             drawCraftBackground(spin)
         }
-        Text("SET", modifier = Modifier.align(Alignment.TopEnd).size(52.dp), fontSize = 14.sp, textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)
+        Text(
+            "SET",
+            modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).background(Color(0xFFFFA12B), CircleShape).size(52.dp),
+            fontSize = 13.sp,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Black,
+            color = Color.White,
+        )
         Column(
-            modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+            modifier = Modifier.align(Alignment.Center).fillMaxWidth().padding(horizontal = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                "ColourSprout\nKids",
-                color = Color(0xFF2D6E42),
-                fontWeight = FontWeight.Black,
-                fontSize = 48.sp,
-                lineHeight = 48.sp,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(Modifier.height(28.dp))
-            Button(
-                onClick = onPlay,
-                modifier = Modifier.size(132.dp),
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B5E)),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp),
-            ) {
-                Text("PLAY", fontSize = 24.sp, color = Color.White, fontWeight = FontWeight.Black)
-            }
+            BubblyTitle()
+            Spacer(Modifier.height(26.dp))
+            GamePlayButton(onPlay)
         }
         Card(
-            modifier = Modifier.align(Alignment.BottomStart).width(180.dp),
+            modifier = Modifier.align(Alignment.BottomStart).padding(16.dp).width(176.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF8E2)),
+            colors = CardDefaults.cardColors(containerColor = Color(0xEEFFF8E2)),
             elevation = CardDefaults.cardElevation(8.dp),
         ) {
             Text("New pictures", modifier = Modifier.padding(16.dp), color = Color(0xFF7A4D2A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+fun BubblyTitle() {
+    val title = "Colour\nMy World"
+    Box(contentAlignment = Alignment.Center) {
+        Text(
+            title,
+            modifier = Modifier.offset(5.dp, 7.dp),
+            color = Color(0xFF1B4E87),
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.Cursive,
+            fontSize = 54.sp,
+            lineHeight = 50.sp,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            title,
+            modifier = Modifier.offset(0.dp, 3.dp),
+            color = Color.White,
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.Cursive,
+            fontSize = 58.sp,
+            lineHeight = 52.sp,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            title,
+            color = Color(0xFFFF3B30),
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.Cursive,
+            fontSize = 56.sp,
+            lineHeight = 51.sp,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+fun GamePlayButton(onPlay: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(136.dp)
+            .clickable(onClick = onPlay),
+        contentAlignment = Alignment.Center,
+    ) {
+        Canvas(Modifier.fillMaxSize()) {
+            drawCircle(Color(0x66000000), radius = size.minDimension * .43f, center = Offset(size.width * .52f, size.height * .56f))
+            drawCircle(Color.White, radius = size.minDimension * .47f, center = center)
+            drawCircle(Color(0xFFBCEAFF), radius = size.minDimension * .41f, center = Offset(size.width * .5f, size.height * .49f))
+            drawCircle(Color(0xFFFFFFFF), radius = size.minDimension * .26f, center = Offset(size.width * .4f, size.height * .36f))
+            val tri = Path().apply {
+                moveTo(size.width * .43f, size.height * .32f)
+                lineTo(size.width * .43f, size.height * .68f)
+                lineTo(size.width * .72f, size.height * .5f)
+                close()
+            }
+            drawPath(tri, Color(0xFF23C564))
         }
     }
 }
@@ -944,10 +1005,10 @@ fun FinishedScreen(page: ColoringPage, previewPath: String?, onContinue: () -> U
             Text("Saved!", fontSize = 44.sp, color = Color(0xFF2D6E42), fontWeight = FontWeight.Black)
             Text(page.title, fontSize = 26.sp, color = Color(0xFF5C3B22), fontWeight = FontWeight.Bold)
             Button(onClick = onContinue, shape = RoundedCornerShape(24.dp)) { Text("Continue colouring") }
-            Button(onClick = { Toast.makeText(context, "Artwork is saved in Pictures/ColourSprout Kids", Toast.LENGTH_SHORT).show() }, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B))) { Text("Save to gallery") }
+            Button(onClick = { Toast.makeText(context, "Artwork is saved in Pictures/Colour My World", Toast.LENGTH_SHORT).show() }, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF45B86B))) { Text("Save to gallery") }
             Button(onClick = { Toast.makeText(context, previewPath ?: "Export PNG saved", Toast.LENGTH_SHORT).show() }, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4E95D9))) { Text("Export PNG") }
             Button(onClick = onNew, shape = RoundedCornerShape(24.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B5E))) { Text("Start new picture") }
-            Text("Export PNG saved in Pictures/ColourSprout Kids", textAlign = TextAlign.Center, color = Color(0xFF5C3B22), fontWeight = FontWeight.Bold)
+            Text("Export PNG saved in Pictures/Colour My World", textAlign = TextAlign.Center, color = Color(0xFF5C3B22), fontWeight = FontWeight.Bold)
             if (previewPath != null) Text(previewPath, textAlign = TextAlign.Center, color = Color(0xFF5C3B22), fontSize = 12.sp)
         }
     }
@@ -1059,12 +1120,12 @@ object ProgressStore {
 }
 
 fun exportPng(context: Context, page: ColoringPage, bitmap: Bitmap): Uri? {
-    val name = "ColourSprout-${page.id}-${System.currentTimeMillis()}.png"
+    val name = "ColourMyWorld-${page.id}-${System.currentTimeMillis()}.png"
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, name)
             put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/ColourSprout Kids")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Colour My World")
         }
         val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return null
         context.contentResolver.openOutputStream(uri)?.use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
