@@ -795,9 +795,6 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                 onRedo = session::redo,
                 onClearArea = { session.clearRegion(session.selectedRegion) },
                 onClearAll = { showClear = true },
-                onDone = {
-                    saveArtwork(showFinished = true)
-                },
             )
         }
     } else {
@@ -842,9 +839,6 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                 onClearArea = { session.clearRegion(session.selectedRegion) },
                 onClearAll = { showClear = true },
                 onMixer = { showMixer = true },
-                onDone = {
-                    saveArtwork(showFinished = true)
-                },
             )
             if (showMixer) {
                 Box(
@@ -880,9 +874,6 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                             onRedo = session::redo,
                             onClearArea = { session.clearRegion(session.selectedRegion) },
                             onClearAll = { showClear = true },
-                            onDone = {
-                                saveArtwork(showFinished = true)
-                            },
                             compact = true,
                         )
                     }
@@ -1122,7 +1113,6 @@ fun ColorPanel(
     onRedo: () -> Unit,
     onClearArea: () -> Unit,
     onClearAll: () -> Unit,
-    onDone: () -> Unit,
     compact: Boolean = false,
 ) {
     val swatches = listOf(
@@ -1166,7 +1156,6 @@ fun ColorPanel(
             MiniButton("REDO", onRedo)
             MiniButton("AREA", onClearArea)
             MiniButton("ALL", onClearAll)
-            MiniButton("SAVE", onDone, Color(0xFF45B86B))
         }
     }
 }
@@ -1285,7 +1274,6 @@ fun CompactColorBar(
     onClearArea: () -> Unit,
     onClearAll: () -> Unit,
     onMixer: () -> Unit,
-    onDone: () -> Unit,
 ) {
     val swatches = listOf(
         Color(0xFFFF3B30), Color(0xFFFF9500), Color(0xFFFFCC00), Color(0xFF34C759),
@@ -1307,7 +1295,6 @@ fun CompactColorBar(
                 }
             }
             MiniButton("MIX", onMixer, Color(0xFFFFC94A), width = 52.dp)
-            MiniButton("SAVE", onDone, Color(0xFF45B86B), width = 64.dp)
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Hue", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(30.dp))
