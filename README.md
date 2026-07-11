@@ -30,7 +30,7 @@ Rendering order is:
 3. `line.png` outline layer.
 4. Compose UI controls.
 
-When the child taps the canvas, screen coordinates are mapped to original image coordinates. The app reads the pixel in `mask.png`, resolves the internal region id, and fills the cached pixel list for that region on the user paint layer. Brush tools clip every brush sample to the region where the stroke started, so strokes do not bleed into neighboring areas.
+When the child taps the canvas, screen coordinates are mapped to original image coordinates. The app reads the pixel in `mask.png`, resolves the internal region id, and fills the cached pixel list for that region on the user paint layer. Mask regions that touch the image border are treated as background and ignored, so tapping open paper does not recolour the whole page. Brush tools clip every brush sample to the region where the stroke started, so strokes do not bleed into neighboring areas.
 
 The canvas supports two-finger pinch zoom and two-finger panning. Touches are mapped through the current zoomed/panned image rectangle before mask lookup, so small regions can be coloured accurately while zoomed in.
 

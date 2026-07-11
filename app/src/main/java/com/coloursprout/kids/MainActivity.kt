@@ -28,8 +28,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.calculateCentroid
 import androidx.compose.foundation.gestures.calculatePan
@@ -447,6 +445,7 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
     val completed = mutableStateOf(ProgressStore.isCompleted(context, page.id))
     private val maskPixels: IntArray = IntArray(maskBitmap.width * maskBitmap.height)
     private val regionPixels: Map<Int, IntArray>
+    private val blockedRegions: Set<Int>
     private val undo = ArrayDeque<Bitmap>()
     private val redo = ArrayDeque<Bitmap>()
     private val regionColours = mutableMapOf<String, String>()
@@ -463,6 +462,7 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
             }
         }
         regionPixels = temp.mapValues { entry -> entry.value.toIntArray() }
+        blockedRegions = findBorderRegions()
         ProgressStore.load(context, page.id, paintBitmap)
         version.intValue++
     }
@@ -470,7 +470,9 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
     fun regionAt(x: Int, y: Int): Int {
         if (x !in 0 until maskBitmap.width || y !in 0 until maskBitmap.height) return 0
         val raw = maskPixels[y * maskBitmap.width + x]
-        return if (AndroidColor.alpha(raw) == 0) 0 else raw and 0x00FFFFFF
+        if (AndroidColor.alpha(raw) == 0) return 0
+        val region = raw and 0x00FFFFFF
+        return if (region in blockedRegions) 0 else region
     }
 
     fun fillRegion(region: Int, color: Color) {
@@ -598,6 +600,23 @@ class ColoringSession(private val context: Context, val page: ColoringPage) {
     private fun changed() {
         version.intValue++
         ProgressStore.save(context, page.id, paintBitmap, completed.value, regionColours)
+    }
+
+    private fun findBorderRegions(): Set<Int> {
+        val blocked = mutableSetOf<Int>()
+        fun addIfRegion(x: Int, y: Int) {
+            val raw = maskPixels[y * maskBitmap.width + x]
+            if (AndroidColor.alpha(raw) > 0) blocked.add(raw and 0x00FFFFFF)
+        }
+        for (x in 0 until maskBitmap.width) {
+            addIfRegion(x, 0)
+            addIfRegion(x, maskBitmap.height - 1)
+        }
+        for (y in 0 until maskBitmap.height) {
+            addIfRegion(0, y)
+            addIfRegion(maskBitmap.width - 1, y)
+        }
+        return blocked
     }
 }
 
@@ -786,51 +805,66 @@ fun ToolShelf(
     modifier: Modifier = Modifier,
 ) {
     val tools = listOf(Tool.Brush, Tool.Bucket, Tool.Crayon, Tool.Marker, Tool.Glitter, Tool.Eraser, Tool.EyeDropper)
-    val baseModifier = modifier.then(if (horizontal) Modifier.fillMaxWidth().height(58.dp) else Modifier.width(72.dp).fillMaxHeight())
+    val baseModifier = modifier.then(if (horizontal) Modifier.fillMaxWidth().height(62.dp) else Modifier.width(86.dp).fillMaxHeight())
     val arrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     if (horizontal) {
         Row(
             baseModifier
                 .background(Color(0xD07A4E2C), RoundedCornerShape(18.dp))
-                .horizontalScroll(rememberScrollState())
                 .padding(6.dp),
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            ToolButton("BACK", false, onClick = onBack)
-            tools.forEach { ToolButton(toolIcon(it), tool == it, onClick = { onTool(it) }) }
-            ToolButton("SAVE", false, onClick = onSave, color = Color(0xFF45B86B))
+            ToolButton("BACK", false, onClick = onBack, width = 58.dp)
+            Row(
+                Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                tools.forEach { ToolButton(toolLabel(it), tool == it, onClick = { onTool(it) }) }
+            }
+            ToolButton("SAVE", false, onClick = onSave, color = Color(0xFF45B86B), width = 62.dp)
         }
     } else {
         Column(baseModifier.background(Color(0xAA7A4E2C), RoundedCornerShape(22.dp)).padding(8.dp), verticalArrangement = arrangement, horizontalAlignment = Alignment.CenterHorizontally) {
-            ToolButton("BACK", false, onClick = onBack)
-            tools.forEach { ToolButton(toolIcon(it), tool == it, onClick = { onTool(it) }) }
-            ToolButton("SAVE", false, onClick = onSave, color = Color(0xFF45B86B))
+            ToolButton("BACK", false, onClick = onBack, width = 68.dp)
+            tools.forEach { ToolButton(toolShortLabel(it), tool == it, onClick = { onTool(it) }, width = 68.dp) }
+            ToolButton("SAVE", false, onClick = onSave, color = Color(0xFF45B86B), width = 68.dp)
         }
     }
 }
 
 @Composable
-fun ToolButton(label: String, selected: Boolean, onClick: () -> Unit, color: Color = Color(0xFFFFF5D7)) {
+fun ToolButton(label: String, selected: Boolean, onClick: () -> Unit, color: Color = Color(0xFFFFF5D7), width: androidx.compose.ui.unit.Dp = 64.dp) {
     Button(
         onClick = onClick,
-        modifier = Modifier.size(44.dp),
-        shape = CircleShape,
-        contentPadding = ButtonDefaults.ContentPadding,
+        modifier = Modifier.width(width).height(46.dp),
+        shape = RoundedCornerShape(16.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp, vertical = 2.dp),
         colors = ButtonDefaults.buttonColors(containerColor = if (selected) Color(0xFFFFC94A) else color),
         elevation = ButtonDefaults.buttonElevation(7.dp),
     ) {
-        Text(label, color = Color(0xFF5C3B22), fontSize = if (label.length > 2) 9.sp else 16.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
+        Text(label, color = Color(0xFF5C3B22), fontSize = if (label.length > 5) 10.sp else 12.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center, lineHeight = 11.sp)
     }
 }
 
-fun toolIcon(tool: Tool) = when (tool) {
+fun toolLabel(tool: Tool) = when (tool) {
     Tool.Bucket -> "FILL"
-    Tool.Brush -> "BR"
-    Tool.Crayon -> "CR"
-    Tool.Marker -> "MK"
-    Tool.Glitter -> "GL"
-    Tool.Eraser -> "ER"
+    Tool.Brush -> "BRUSH"
+    Tool.Crayon -> "CRAYON"
+    Tool.Marker -> "MARKER"
+    Tool.Glitter -> "GLITTER"
+    Tool.Eraser -> "ERASE"
+    Tool.EyeDropper -> "PICK"
+}
+
+fun toolShortLabel(tool: Tool) = when (tool) {
+    Tool.Bucket -> "FILL"
+    Tool.Brush -> "BRUSH"
+    Tool.Crayon -> "CRAY"
+    Tool.Marker -> "MARK"
+    Tool.Glitter -> "GLIT"
+    Tool.Eraser -> "ERASE"
     Tool.EyeDropper -> "PICK"
 }
 
@@ -952,9 +986,6 @@ fun ColoringCanvas(
             drawRect(Color.White, topLeft = dst.topLeft, size = dst.size)
             drawImage(paintImage, dstOffset = androidx.compose.ui.unit.IntOffset(dst.left.roundToInt(), dst.top.roundToInt()), dstSize = IntSize(dst.width.roundToInt(), dst.height.roundToInt()))
             drawImage(lineImage, dstOffset = androidx.compose.ui.unit.IntOffset(dst.left.roundToInt(), dst.top.roundToInt()), dstSize = IntSize(dst.width.roundToInt(), dst.height.roundToInt()))
-            if (session.selectedRegion != 0) {
-                drawRect(Color(0x3345B86B), topLeft = Offset(dst.left, dst.top), size = dst.size)
-            }
             if (zoom > 1.02f) {
                 drawRoundRect(
                     Color(0xCC5C3B22),
@@ -1033,10 +1064,10 @@ fun ColorPanel(
                 }
             }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            MiniButton("UN", onUndo)
-            MiniButton("RE", onRedo)
-            MiniButton("CLR", onClearArea)
+        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            MiniButton("UNDO", onUndo)
+            MiniButton("REDO", onRedo)
+            MiniButton("AREA", onClearArea)
             MiniButton("ALL", onClearAll)
             MiniButton("SAVE", onDone, Color(0xFF45B86B))
         }
@@ -1044,9 +1075,16 @@ fun ColorPanel(
 }
 
 @Composable
-fun MiniButton(label: String, onClick: () -> Unit, color: Color = Color(0xFFFFF5D7)) {
-    Button(onClick = onClick, shape = CircleShape, modifier = Modifier.size(42.dp), contentPadding = ButtonDefaults.ContentPadding, colors = ButtonDefaults.buttonColors(containerColor = color)) {
-        Text(label, color = Color(0xFF5C3B22), fontWeight = FontWeight.Black, fontSize = if (label.length > 2) 10.sp else 14.sp, textAlign = TextAlign.Center)
+fun MiniButton(label: String, onClick: () -> Unit, color: Color = Color(0xFFFFF5D7), width: androidx.compose.ui.unit.Dp = 58.dp) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(14.dp),
+        modifier = Modifier.width(width).height(42.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp, vertical = 2.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = color),
+        elevation = ButtonDefaults.buttonElevation(5.dp),
+    ) {
+        Text(label, color = Color(0xFF5C3B22), fontWeight = FontWeight.Black, fontSize = 11.sp, textAlign = TextAlign.Center, lineHeight = 11.sp)
     }
 }
 
@@ -1160,8 +1198,8 @@ fun CompactColorBar(
                     Box(Modifier.size(32.dp).background(swatch, CircleShape).border(2.dp, Color.White, CircleShape).clickable { onColor(swatch) })
                 }
             }
-            MiniButton("MIX", onMixer, Color(0xFFFFC94A))
-            MiniButton("SAVE", onDone, Color(0xFF45B86B))
+            MiniButton("MIX", onMixer, Color(0xFFFFC94A), width = 52.dp)
+            MiniButton("SAVE", onDone, Color(0xFF45B86B), width = 64.dp)
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Hue", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(30.dp))
@@ -1169,10 +1207,14 @@ fun CompactColorBar(
             Text("Size", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(30.dp))
             Slider(value = brushSize, onValueChange = onBrushSize, valueRange = 5f..54f, modifier = Modifier.weight(1f))
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-            MiniButton("UN", onUndo)
-            MiniButton("RE", onRedo)
-            MiniButton("CLR", onClearArea)
+        Row(
+            Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            MiniButton("UNDO", onUndo)
+            MiniButton("REDO", onRedo)
+            MiniButton("AREA", onClearArea)
             MiniButton("ALL", onClearAll)
         }
     }
