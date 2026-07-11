@@ -274,7 +274,7 @@ fun HomeScreen(onPlay: () -> Unit, onGallery: () -> Unit) {
             Image(
                 painter = painterResource(R.drawable.colour_my_world_logo),
                 contentDescription = "Colour My World",
-                modifier = Modifier.fillMaxWidth(0.92f).height(190.dp),
+                modifier = Modifier.fillMaxWidth(0.94f).aspectRatio(960f / 620f),
                 contentScale = ContentScale.Fit,
             )
             Spacer(Modifier.height(26.dp))
