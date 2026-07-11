@@ -13,6 +13,12 @@ LICENSE_FILE = ROOT / "app" / "src" / "main" / "assets" / "licenses.json"
 REPORT_FILE = ROOT / "asset-report.json"
 SIZE = 768
 MIN_REGION = 90
+SOURCE_GRID = 4
+SOURCE_OVERLAP_PAD = 28
+SOURCE_SAFE_MARGIN = 80
+EDGE_ARTIFACT_MARGIN = 64
+MAX_EDGE_ARTIFACT_PIXELS = 10000
+MIN_LINE_COMPONENT_PIXELS = 42
 
 PAGES = [
     ("colouring_sheet_01.png", 0, "animals", "cat_001", "Cat", "easy", ["cat", "pet", "animal"]),
@@ -59,21 +65,72 @@ def pastel(index: int):
     return (min(255, 125 + r // 2), min(255, 125 + g // 2), min(255, 125 + b // 2), 255)
 
 
-def crop_cell(sheet: Image.Image, index: int) -> Image.Image:
+def source_component_boxes(sheet: Image.Image) -> dict[int, list[tuple[int, int, int, int]]]:
     w, h = sheet.size
-    cell_w, cell_h = w // 4, h // 4
-    col, row = index % 4, index // 4
-    crop = sheet.crop((col * cell_w, row * cell_h, (col + 1) * cell_w, (row + 1) * cell_h)).convert("RGB")
-    bg = Image.new("RGB", crop.size, "white")
-    bg.paste(crop)
-    gray = ImageOps.grayscale(bg)
-    bbox = gray.point(lambda p: 255 if p < 175 else 0).filter(ImageFilter.MaxFilter(5)).getbbox()
-    if bbox:
-        pad = 18
-        bbox = (max(0, bbox[0] - pad), max(0, bbox[1] - pad), min(crop.width, bbox[2] + pad), min(crop.height, bbox[3] + pad))
-        crop = crop.crop(bbox)
+    cell_w, cell_h = w / SOURCE_GRID, h / SOURCE_GRID
+    centers = [
+        ((i % SOURCE_GRID + 0.5) * cell_w, (i // SOURCE_GRID + 0.5) * cell_h)
+        for i in range(SOURCE_GRID * SOURCE_GRID)
+    ]
+    dark = ImageOps.grayscale(sheet).point(lambda p: 1 if p < 175 else 0)
+    px = dark.load()
+    visited = bytearray(w * h)
+    boxes = {i: [] for i in range(SOURCE_GRID * SOURCE_GRID)}
+
+    def idx(x, y): return y * w + x
+
+    for start_y in range(h):
+        for start_x in range(w):
+            start_idx = idx(start_x, start_y)
+            if visited[start_idx] or not px[start_x, start_y]:
+                continue
+            q = deque([(start_x, start_y)])
+            visited[start_idx] = 1
+            count = 0
+            sum_x = 0
+            sum_y = 0
+            min_x = max_x = start_x
+            min_y = max_y = start_y
+            while q:
+                x, y = q.popleft()
+                count += 1
+                sum_x += x
+                sum_y += y
+                min_x = min(min_x, x)
+                max_x = max(max_x, x)
+                min_y = min(min_y, y)
+                max_y = max(max_y, y)
+                for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+                    if 0 <= nx < w and 0 <= ny < h:
+                        n = idx(nx, ny)
+                        if not visited[n] and px[nx, ny]:
+                            visited[n] = 1
+                            q.append((nx, ny))
+            if count < 6:
+                continue
+            cx = sum_x / count
+            cy = sum_y / count
+            assigned = min(range(len(centers)), key=lambda i: (centers[i][0] - cx) ** 2 + (centers[i][1] - cy) ** 2)
+            boxes[assigned].append((min_x, min_y, max_x + 1, max_y + 1))
+    return boxes
+
+
+def crop_cell(sheet: Image.Image, index: int, component_boxes: dict[int, list[tuple[int, int, int, int]]]) -> Image.Image:
+    boxes = component_boxes.get(index, [])
+    if boxes:
+        bbox = (
+            max(0, min(box[0] for box in boxes) - SOURCE_OVERLAP_PAD),
+            max(0, min(box[1] for box in boxes) - SOURCE_OVERLAP_PAD),
+            min(sheet.width, max(box[2] for box in boxes) + SOURCE_OVERLAP_PAD),
+            min(sheet.height, max(box[3] for box in boxes) + SOURCE_OVERLAP_PAD),
+        )
+        crop = sheet.crop(bbox).convert("RGB")
+    else:
+        cell_w, cell_h = sheet.width // SOURCE_GRID, sheet.height // SOURCE_GRID
+        col, row = index % SOURCE_GRID, index // SOURCE_GRID
+        crop = sheet.crop((col * cell_w, row * cell_h, (col + 1) * cell_w, (row + 1) * cell_h)).convert("RGB")
     canvas = Image.new("RGB", (SIZE, SIZE), "white")
-    max_side = SIZE - 44
+    max_side = SIZE - SOURCE_SAFE_MARGIN
     scale = min(max_side / crop.width, max_side / crop.height)
     crop = crop.resize((max(1, int(crop.width * scale)), max(1, int(crop.height * scale))), Image.Resampling.LANCZOS)
     canvas.paste(crop, ((SIZE - crop.width) // 2, (SIZE - crop.height) // 2))
@@ -83,11 +140,53 @@ def crop_cell(sheet: Image.Image, index: int) -> Image.Image:
 def line_bitmap(cell: Image.Image) -> tuple[Image.Image, Image.Image]:
     gray = ImageOps.grayscale(cell)
     black = gray.point(lambda p: 255 if p < 190 else 0).filter(ImageFilter.MaxFilter(3))
+    black = remove_edge_artifacts(black)
     alpha = black.filter(ImageFilter.GaussianBlur(0.35))
     line = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     line.putalpha(alpha)
     binary = black.point(lambda p: 1 if p > 0 else 0)
     return line, binary
+
+
+def remove_edge_artifacts(black: Image.Image) -> Image.Image:
+    width, height = black.size
+    binary = black.point(lambda p: 1 if p > 0 else 0)
+    px = binary.load()
+    visited = bytearray(width * height)
+    remove = []
+
+    def idx(x, y): return y * width + x
+
+    for start_y in range(height):
+        for start_x in range(width):
+            start_idx = idx(start_x, start_y)
+            if visited[start_idx] or not px[start_x, start_y]:
+                continue
+            q = deque([(start_x, start_y)])
+            visited[start_idx] = 1
+            pixels = []
+            touches_edge = False
+            while q:
+                x, y = q.popleft()
+                pixels.append((x, y))
+                if x < EDGE_ARTIFACT_MARGIN or y < EDGE_ARTIFACT_MARGIN or x >= width - EDGE_ARTIFACT_MARGIN or y >= height - EDGE_ARTIFACT_MARGIN:
+                    touches_edge = True
+                for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+                    if 0 <= nx < width and 0 <= ny < height:
+                        n = idx(nx, ny)
+                        if not visited[n] and px[nx, ny]:
+                            visited[n] = 1
+                            q.append((nx, ny))
+            if len(pixels) < MIN_LINE_COMPONENT_PIXELS or (touches_edge and len(pixels) <= MAX_EDGE_ARTIFACT_PIXELS):
+                remove.extend(pixels)
+
+    if not remove:
+        return black
+    cleaned = black.copy()
+    out = cleaned.load()
+    for x, y in remove:
+        out[x, y] = 0
+    return cleaned
 
 
 def make_mask(binary_line: Image.Image) -> tuple[Image.Image, list[dict]]:
@@ -156,6 +255,14 @@ def main():
     sources = {p.name: Image.open(p).convert("RGB") for p in SOURCE_ROOT.glob("*.png")}
     if len(sources) < 2:
         raise SystemExit(f"Expected generated source sheets in {SOURCE_ROOT}")
+    source_boxes = {name: source_component_boxes(sheet) for name, sheet in sources.items()}
+    existing_extra_licenses = []
+    if LICENSE_FILE.exists():
+        try:
+            existing = json.loads(LICENSE_FILE.read_text(encoding="utf-8"))
+            existing_extra_licenses = [item for item in existing if not str(item.get("id", "")).startswith("ai-generated-")]
+        except Exception:
+            existing_extra_licenses = []
     expected = {(category, page_id) for _, _, category, page_id, *_ in PAGES}
     if ASSET_ROOT.exists():
         for metadata_path in ASSET_ROOT.glob("*/*/metadata.json"):
@@ -168,7 +275,7 @@ def main():
     accepted, rejected, licenses = [], [], []
     for source_name, cell_index, category, page_id, title, difficulty, tags in PAGES:
         try:
-            cell = crop_cell(sources[source_name], cell_index)
+            cell = crop_cell(sources[source_name], cell_index, source_boxes[source_name])
             line, binary = line_bitmap(cell)
             mask, regions = make_mask(binary)
             if not regions:
@@ -207,7 +314,7 @@ def main():
             accepted.append({"id": page_id, "category": category, "title": title, "source": source_name, "cell": cell_index, "regions": len(regions)})
         except Exception as exc:
             rejected.append({"id": page_id, "source": source_name, "cell": cell_index, "reason": str(exc)})
-    LICENSE_FILE.write_text(json.dumps(licenses, indent=2), encoding="utf-8")
+    LICENSE_FILE.write_text(json.dumps(licenses + existing_extra_licenses, indent=2), encoding="utf-8")
     REPORT_FILE.write_text(json.dumps({"accepted": accepted, "rejected": rejected}, indent=2), encoding="utf-8")
     print(f"Generated {len(accepted)} assets from generated source sheets")
     print(f"Rejected {len(rejected)} assets")

@@ -16,606 +16,606 @@
     {
       "id": 1,
       "maskColor": "#70B222",
-      "pixelCount": 186,
+      "pixelCount": 151,
       "bounds": [
-        391,
-        77,
-        410,
-        95
+        387,
+        91,
+        404,
+        108
       ]
     },
     {
       "id": 2,
       "maskColor": "#951F8F",
-      "pixelCount": 116,
+      "pixelCount": 90,
       "bounds": [
-        284,
-        85,
-        303,
-        100
+        288,
+        99,
+        305,
+        112
       ]
     },
     {
       "id": 3,
       "maskColor": "#BA6820",
-      "pixelCount": 582,
+      "pixelCount": 493,
       "bounds": [
-        392,
-        101,
-        420,
-        135
+        388,
+        114,
+        413,
+        145
       ]
     },
     {
       "id": 4,
       "maskColor": "#DFB18D",
-      "pixelCount": 155,
+      "pixelCount": 123,
       "bounds": [
-        270,
-        103,
-        290,
-        114
+        275,
+        115,
+        293,
+        126
       ]
     },
     {
       "id": 5,
       "maskColor": "#281E1E",
-      "pixelCount": 616,
+      "pixelCount": 522,
       "bounds": [
-        301,
-        112,
+        303,
+        124,
         331,
-        147
+        156
       ]
     },
     {
       "id": 6,
       "maskColor": "#4D678B",
-      "pixelCount": 229,
+      "pixelCount": 184,
       "bounds": [
-        254,
-        119,
-        286,
-        138
+        260,
+        130,
+        289,
+        147
       ]
     },
     {
       "id": 7,
       "maskColor": "#72B01C",
-      "pixelCount": 893,
+      "pixelCount": 747,
       "bounds": [
-        377,
-        128,
-        417,
-        173
+        375,
+        139,
+        410,
+        179
       ]
     },
     {
       "id": 8,
       "maskColor": "#971D89",
-      "pixelCount": 639,
+      "pixelCount": 540,
       "bounds": [
-        264,
-        133,
-        289,
-        182
+        270,
+        143,
+        292,
+        188
       ]
     },
     {
       "id": 9,
       "maskColor": "#BC661A",
-      "pixelCount": 94,
+      "pixelCount": 107,
       "bounds": [
-        348,
-        138,
-        364,
-        147
+        254,
+        154,
+        265,
+        171
       ]
     },
     {
       "id": 10,
       "maskColor": "#E1AF87",
-      "pixelCount": 136,
+      "pixelCount": 49590,
       "bounds": [
-        247,
-        145,
-        260,
-        164
+        173,
+        159,
+        648,
+        649
       ]
     },
     {
       "id": 11,
       "maskColor": "#2A1CF4",
-      "pixelCount": 58193,
+      "pixelCount": 1005,
       "bounds": [
-        161,
-        150,
-        674,
-        679
+        403,
+        169,
+        448,
+        207
       ]
     },
     {
       "id": 12,
       "maskColor": "#4F6585",
-      "pixelCount": 1186,
+      "pixelCount": 196,
       "bounds": [
-        408,
-        161,
-        458,
-        202
+        219,
+        205,
+        239,
+        243
       ]
     },
     {
       "id": 13,
       "maskColor": "#74AEF2",
-      "pixelCount": 236,
+      "pixelCount": 380,
       "bounds": [
-        210,
-        200,
-        232,
-        241
+        311,
+        209,
+        340,
+        263
       ]
     },
     {
       "id": 14,
       "maskColor": "#991B83",
-      "pixelCount": 471,
+      "pixelCount": 136,
       "bounds": [
-        309,
-        204,
-        342,
-        262
+        411,
+        211,
+        430,
+        223
       ]
     },
     {
       "id": 15,
       "maskColor": "#BE64F0",
-      "pixelCount": 159,
+      "pixelCount": 642,
       "bounds": [
         417,
-        206,
-        438,
-        219
+        234,
+        456,
+        266
       ]
     },
     {
       "id": 16,
       "maskColor": "#E3AD81",
-      "pixelCount": 691,
+      "pixelCount": 6085,
       "bounds": [
-        423,
-        230,
-        466,
-        257
+        517,
+        272,
+        643,
+        430
       ]
     },
     {
       "id": 17,
       "maskColor": "#2C1AEE",
-      "pixelCount": 7137,
+      "pixelCount": 5386,
       "bounds": [
-        531,
-        272,
-        668,
-        441
+        502,
+        275,
+        567,
+        438
       ]
     },
     {
       "id": 18,
       "maskColor": "#51637F",
-      "pixelCount": 6304,
+      "pixelCount": 289,
       "bounds": [
-        516,
-        276,
-        585,
-        452
+        404,
+        279,
+        426,
+        304
       ]
     },
     {
       "id": 19,
       "maskColor": "#76ACEC",
-      "pixelCount": 347,
+      "pixelCount": 4885,
       "bounds": [
-        409,
-        279,
-        433,
-        307
+        411,
+        295,
+        501,
+        444
       ]
     },
     {
       "id": 20,
       "maskColor": "#9B197D",
-      "pixelCount": 5733,
+      "pixelCount": 633,
       "bounds": [
-        418,
+        109,
         296,
-        515,
-        458
+        167,
+        395
       ]
     },
     {
       "id": 21,
       "maskColor": "#C062EA",
-      "pixelCount": 767,
+      "pixelCount": 3245,
       "bounds": [
-        91,
-        297,
-        154,
-        405
+        114,
+        313,
+        183,
+        417
       ]
     },
     {
       "id": 22,
       "maskColor": "#E5AB7B",
-      "pixelCount": 3802,
+      "pixelCount": 225,
       "bounds": [
-        97,
-        316,
-        171,
-        429
+        385,
+        320,
+        403,
+        342
       ]
     },
     {
       "id": 23,
       "maskColor": "#2EF4E8",
-      "pixelCount": 266,
+      "pixelCount": 779,
       "bounds": [
-        388,
-        324,
-        409,
-        348
+        279,
+        338,
+        325,
+        361
       ]
     },
     {
       "id": 24,
       "maskColor": "#536179",
-      "pixelCount": 917,
+      "pixelCount": 2626,
       "bounds": [
-        274,
-        344,
-        325,
-        368
+        180,
+        340,
+        235,
+        423
       ]
     },
     {
       "id": 25,
       "maskColor": "#78AAE6",
-      "pixelCount": 3089,
+      "pixelCount": 653,
       "bounds": [
-        168,
-        346,
-        228,
-        436
+        220,
+        342,
+        251,
+        406
       ]
     },
     {
       "id": 26,
       "maskColor": "#9DF377",
-      "pixelCount": 771,
+      "pixelCount": 202,
       "bounds": [
-        211,
-        348,
-        245,
-        417
+        252,
+        346,
+        272,
+        365
       ]
     },
     {
       "id": 27,
       "maskColor": "#C260E4",
-      "pixelCount": 245,
+      "pixelCount": 234,
       "bounds": [
-        245,
+        235,
         351,
-        268,
-        372
+        259,
+        378
       ]
     },
     {
       "id": 28,
       "maskColor": "#E7A975",
-      "pixelCount": 271,
+      "pixelCount": 195,
       "bounds": [
-        227,
+        376,
         358,
-        253,
-        387
+        391,
+        379
       ]
     },
     {
       "id": 29,
       "maskColor": "#30F2E2",
-      "pixelCount": 235,
+      "pixelCount": 1188,
       "bounds": [
-        380,
-        365,
-        395,
-        388
+        263,
+        363,
+        315,
+        395
       ]
     },
     {
       "id": 30,
       "maskColor": "#555F73",
-      "pixelCount": 1407,
+      "pixelCount": 1817,
       "bounds": [
-        257,
-        371,
-        314,
-        405
+        247,
+        394,
+        307,
+        434
       ]
     },
     {
       "id": 31,
       "maskColor": "#7AA8E0",
-      "pixelCount": 2141,
+      "pixelCount": 2556,
       "bounds": [
-        240,
-        403,
-        306,
-        447
+        238,
+        430,
+        309,
+        479
       ]
     },
     {
       "id": 32,
       "maskColor": "#9FF171",
-      "pixelCount": 2999,
+      "pixelCount": 5393,
       "bounds": [
-        231,
-        442,
-        308,
-        496
+        176,
+        435,
+        264,
+        633
       ]
     },
     {
       "id": 33,
       "maskColor": "#C45EDE",
-      "pixelCount": 6333,
+      "pixelCount": 91,
       "bounds": [
-        164,
+        433,
         448,
-        259,
-        662
+        448,
+        460
       ]
     },
     {
       "id": 34,
       "maskColor": "#E9A76F",
-      "pixelCount": 114,
+      "pixelCount": 7082,
       "bounds": [
-        440,
-        461,
-        457,
-        475
+        500,
+        459,
+        637,
+        613
       ]
     },
     {
       "id": 35,
       "maskColor": "#32F0DC",
-      "pixelCount": 8318,
+      "pixelCount": 140,
       "bounds": [
-        513,
-        474,
-        661,
-        640
+        465,
+        472,
+        481,
+        487
       ]
     },
     {
       "id": 36,
       "maskColor": "#575D6D",
-      "pixelCount": 161,
+      "pixelCount": 2668,
       "bounds": [
-        475,
-        488,
-        493,
-        505
+        239,
+        473,
+        317,
+        521
       ]
     },
     {
       "id": 37,
       "maskColor": "#7CA6DA",
-      "pixelCount": 3131,
+      "pixelCount": 92,
       "bounds": [
-        231,
-        489,
-        316,
-        541
+        582,
+        486,
+        589,
+        502
       ]
     },
     {
       "id": 38,
       "maskColor": "#A1EF6B",
-      "pixelCount": 107,
+      "pixelCount": 11213,
       "bounds": [
-        602,
-        504,
-        611,
-        522
+        396,
+        491,
+        503,
+        646
       ]
     },
     {
       "id": 39,
       "maskColor": "#C65CD8",
-      "pixelCount": 13119,
+      "pixelCount": 1899,
       "bounds": [
-        402,
-        508,
-        517,
-        676
+        180,
+        492,
+        214,
+        573
       ]
     },
     {
       "id": 40,
       "maskColor": "#EBA569",
-      "pixelCount": 2234,
+      "pixelCount": 133,
       "bounds": [
-        168,
-        510,
-        205,
-        597
+        494,
+        503,
+        506,
+        520
       ]
     },
     {
       "id": 41,
       "maskColor": "#34EED6",
-      "pixelCount": 165,
+      "pixelCount": 1829,
       "bounds": [
-        506,
-        521,
-        520,
-        541
+        251,
+        517,
+        318,
+        559
       ]
     },
     {
       "id": 42,
       "maskColor": "#595B67",
-      "pixelCount": 2140,
+      "pixelCount": 104,
       "bounds": [
-        244,
-        536,
-        317,
-        582
+        513,
+        534,
+        527,
+        546
       ]
     },
     {
       "id": 43,
       "maskColor": "#7EA4D4",
-      "pixelCount": 125,
+      "pixelCount": 95,
       "bounds": [
-        528,
-        555,
-        542,
-        568
+        579,
+        538,
+        591,
+        550
       ]
     },
     {
       "id": 44,
       "maskColor": "#A3ED65",
-      "pixelCount": 118,
+      "pixelCount": 109,
       "bounds": [
-        598,
-        559,
-        611,
-        573
+        543,
+        548,
+        561,
+        557
       ]
     },
     {
       "id": 45,
       "maskColor": "#C85AD2",
-      "pixelCount": 126,
+      "pixelCount": 281,
       "bounds": [
-        559,
-        569,
-        579,
-        579
+        280,
+        565,
+        310,
+        582
       ]
     },
     {
       "id": 46,
       "maskColor": "#EDA363",
-      "pixelCount": 494,
+      "pixelCount": 413,
       "bounds": [
-        382,
-        586,
-        408,
-        630
+        379,
+        566,
+        402,
+        603
       ]
     },
     {
       "id": 47,
       "maskColor": "#36ECD0",
-      "pixelCount": 343,
+      "pixelCount": 387,
       "bounds": [
-        275,
-        588,
-        308,
-        607
+        269,
+        570,
+        291,
+        599
       ]
     },
     {
       "id": 48,
       "maskColor": "#5B5961",
-      "pixelCount": 463,
+      "pixelCount": 249,
       "bounds": [
-        263,
-        593,
-        289,
-        624
+        156,
+        587,
+        189,
+        610
       ]
     },
     {
       "id": 49,
       "maskColor": "#80A2CE",
-      "pixelCount": 297,
+      "pixelCount": 92,
       "bounds": [
-        142,
-        612,
-        178,
-        638
+        575,
+        604,
+        602,
+        620
       ]
     },
     {
       "id": 50,
       "maskColor": "#A5EB5F",
-      "pixelCount": 116,
+      "pixelCount": 171,
       "bounds": [
-        594,
-        628,
-        626,
-        647
+        162,
+        611,
+        176,
+        628
       ]
     },
     {
       "id": 51,
       "maskColor": "#CA58CC",
-      "pixelCount": 206,
+      "pixelCount": 232,
       "bounds": [
-        148,
-        637,
-        163,
-        657
+        187,
+        615,
+        203,
+        636
       ]
     },
     {
       "id": 52,
       "maskColor": "#EFA15D",
-      "pixelCount": 278,
+      "pixelCount": 260,
       "bounds": [
-        175,
-        642,
-        193,
-        665
+        503,
+        616,
+        528,
+        629
       ]
     },
     {
       "id": 53,
       "maskColor": "#38EACA",
-      "pixelCount": 305,
+      "pixelCount": 249,
       "bounds": [
-        516,
-        642,
-        543,
-        657
+        530,
+        617,
+        569,
+        629
       ]
     },
     {
       "id": 54,
       "maskColor": "#5D575B",
-      "pixelCount": 303,
+      "pixelCount": 222,
       "bounds": [
-        546,
-        644,
-        588,
-        657
+        215,
+        620,
+        232,
+        640
       ]
     },
     {
       "id": 55,
       "maskColor": "#82A0C8",
-      "pixelCount": 263,
+      "pixelCount": 141,
       "bounds": [
-        206,
-        648,
-        224,
-        669
+        388,
+        628,
+        399,
+        645
       ]
     },
     {
@@ -623,65 +623,54 @@
       "maskColor": "#A7E959",
       "pixelCount": 175,
       "bounds": [
-        392,
-        656,
-        405,
-        675
+        270,
+        629,
+        284,
+        647
       ]
     },
     {
       "id": 57,
       "maskColor": "#CC56C6",
-      "pixelCount": 209,
+      "pixelCount": 234,
       "bounds": [
-        265,
-        657,
-        280,
-        677
+        410,
+        631,
+        426,
+        652
       ]
     },
     {
       "id": 58,
       "maskColor": "#F19F57",
-      "pixelCount": 283,
+      "pixelCount": 271,
       "bounds": [
-        416,
-        659,
-        434,
-        682
+        297,
+        633,
+        315,
+        655
       ]
     },
     {
       "id": 59,
       "maskColor": "#3AE8C4",
-      "pixelCount": 323,
+      "pixelCount": 219,
       "bounds": [
-        294,
-        662,
-        314,
-        685
+        440,
+        634,
+        456,
+        654
       ]
     },
     {
       "id": 60,
       "maskColor": "#5F5555",
-      "pixelCount": 257,
-      "bounds": [
-        448,
-        663,
-        466,
-        684
-      ]
-    },
-    {
-      "id": 61,
-      "maskColor": "#849EC2",
-      "pixelCount": 264,
+      "pixelCount": 222,
       "bounds": [
         331,
-        667,
-        348,
-        689
+        638,
+        347,
+        658
       ]
     }
   ]
