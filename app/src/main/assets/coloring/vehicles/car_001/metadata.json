@@ -1,6 +1,6 @@
 {
   "id": "car_001",
-  "title": "Happy Car",
+  "title": "Little Car",
   "category": "vehicles",
   "difficulty": "easy",
   "tags": [
@@ -10,28 +10,239 @@
   "lineArtPath": "coloring/vehicles/car_001/line.png",
   "maskPath": "coloring/vehicles/car_001/mask.png",
   "thumbnailPath": "coloring/vehicles/car_001/thumb.png",
-  "licenseId": "generated-car_001",
+  "licenseId": "ai-generated-car_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
-      "maskColor": "#951F8F",
-      "pixelCount": 23836
+      "maskColor": "#70B222",
+      "pixelCount": 80068,
+      "bounds": [
+        90,
+        93,
+        688,
+        480
+      ]
     },
     {
       "id": 2,
-      "maskColor": "#70B222",
-      "pixelCount": 83044
+      "maskColor": "#951F8F",
+      "pixelCount": 24487,
+      "bounds": [
+        215,
+        135,
+        429,
+        283
+      ]
     },
     {
       "id": 3,
       "maskColor": "#BA6820",
-      "pixelCount": 8005
+      "pixelCount": 8909,
+      "bounds": [
+        453,
+        154,
+        542,
+        292
+      ]
     },
     {
       "id": 4,
       "maskColor": "#DFB18D",
-      "pixelCount": 8005
+      "pixelCount": 3183,
+      "bounds": [
+        559,
+        163,
+        605,
+        284
+      ]
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 1789,
+      "bounds": [
+        444,
+        273,
+        503,
+        314
+      ]
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 98,
+      "bounds": [
+        524,
+        326,
+        545,
+        331
+      ]
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 372,
+      "bounds": [
+        94,
+        341,
+        143,
+        411
+      ]
+    },
+    {
+      "id": 8,
+      "maskColor": "#971D89",
+      "pixelCount": 1232,
+      "bounds": [
+        102,
+        351,
+        133,
+        401
+      ]
+    },
+    {
+      "id": 9,
+      "maskColor": "#BC661A",
+      "pixelCount": 612,
+      "bounds": [
+        279,
+        356,
+        338,
+        432
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 1663,
+      "bounds": [
+        288,
+        367,
+        326,
+        421
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 6086,
+      "bounds": [
+        577,
+        377,
+        659,
+        516
+      ]
+    },
+    {
+      "id": 12,
+      "maskColor": "#4F6585",
+      "pixelCount": 8496,
+      "bounds": [
+        367,
+        399,
+        470,
+        553
+      ]
+    },
+    {
+      "id": 13,
+      "maskColor": "#74AEF2",
+      "pixelCount": 1862,
+      "bounds": [
+        167,
+        400,
+        241,
+        431
+      ]
+    },
+    {
+      "id": 14,
+      "maskColor": "#991B83",
+      "pixelCount": 883,
+      "bounds": [
+        610,
+        420,
+        635,
+        475
+      ]
+    },
+    {
+      "id": 15,
+      "maskColor": "#BE64F0",
+      "pixelCount": 11802,
+      "bounds": [
+        77,
+        429,
+        360,
+        504
+      ]
+    },
+    {
+      "id": 16,
+      "maskColor": "#E3AD81",
+      "pixelCount": 1423,
+      "bounds": [
+        404,
+        444,
+        443,
+        509
+      ]
+    },
+    {
+      "id": 17,
+      "maskColor": "#2C1AEE",
+      "pixelCount": 991,
+      "bounds": [
+        544,
+        471,
+        590,
+        516
+      ]
+    },
+    {
+      "id": 18,
+      "maskColor": "#51637F",
+      "pixelCount": 599,
+      "bounds": [
+        119,
+        496,
+        166,
+        524
+      ]
+    },
+    {
+      "id": 19,
+      "maskColor": "#76ACEC",
+      "pixelCount": 613,
+      "bounds": [
+        162,
+        505,
+        217,
+        524
+      ]
+    },
+    {
+      "id": 20,
+      "maskColor": "#9B197D",
+      "pixelCount": 1117,
+      "bounds": [
+        331,
+        506,
+        385,
+        553
+      ]
+    },
+    {
+      "id": 21,
+      "maskColor": "#C062EA",
+      "pixelCount": 120,
+      "bounds": [
+        550,
+        710,
+        562,
+        721
+      ]
     }
   ]
 }

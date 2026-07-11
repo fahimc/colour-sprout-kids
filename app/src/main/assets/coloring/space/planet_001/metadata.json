@@ -10,18 +10,217 @@
   "lineArtPath": "coloring/space/planet_001/line.png",
   "maskPath": "coloring/space/planet_001/mask.png",
   "thumbnailPath": "coloring/space/planet_001/thumb.png",
-  "licenseId": "generated-planet_001",
+  "licenseId": "ai-generated-planet_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
       "maskColor": "#70B222",
-      "pixelCount": 49564
+      "pixelCount": 97,
+      "bounds": [
+        169,
+        95,
+        180,
+        105
+      ]
     },
     {
       "id": 2,
       "maskColor": "#951F8F",
-      "pixelCount": 34237
+      "pixelCount": 1291,
+      "bounds": [
+        626,
+        111,
+        666,
+        151
+      ]
+    },
+    {
+      "id": 3,
+      "maskColor": "#BA6820",
+      "pixelCount": 45996,
+      "bounds": [
+        210,
+        147,
+        579,
+        407
+      ]
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 6474,
+      "bounds": [
+        382,
+        148,
+        524,
+        227
+      ]
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 408,
+      "bounds": [
+        141,
+        195,
+        172,
+        226
+      ]
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 7413,
+      "bounds": [
+        225,
+        195,
+        387,
+        295
+      ]
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 27072,
+      "bounds": [
+        75,
+        225,
+        737,
+        491
+      ]
+    },
+    {
+      "id": 8,
+      "maskColor": "#971D89",
+      "pixelCount": 8252,
+      "bounds": [
+        129,
+        245,
+        677,
+        453
+      ]
+    },
+    {
+      "id": 9,
+      "maskColor": "#BC661A",
+      "pixelCount": 5122,
+      "bounds": [
+        467,
+        251,
+        604,
+        384
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 1574,
+      "bounds": [
+        600,
+        261,
+        649,
+        314
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 8420,
+      "bounds": [
+        211,
+        360,
+        388,
+        432
+      ]
+    },
+    {
+      "id": 12,
+      "maskColor": "#4F6585",
+      "pixelCount": 2192,
+      "bounds": [
+        159,
+        370,
+        219,
+        432
+      ]
+    },
+    {
+      "id": 13,
+      "maskColor": "#74AEF2",
+      "pixelCount": 7101,
+      "bounds": [
+        396,
+        399,
+        599,
+        499
+      ]
+    },
+    {
+      "id": 14,
+      "maskColor": "#991B83",
+      "pixelCount": 92,
+      "bounds": [
+        670,
+        434,
+        680,
+        444
+      ]
+    },
+    {
+      "id": 15,
+      "maskColor": "#BE64F0",
+      "pixelCount": 2623,
+      "bounds": [
+        282,
+        476,
+        403,
+        541
+      ]
+    },
+    {
+      "id": 16,
+      "maskColor": "#E3AD81",
+      "pixelCount": 6164,
+      "bounds": [
+        347,
+        477,
+        552,
+        541
+      ]
+    },
+    {
+      "id": 17,
+      "maskColor": "#2C1AEE",
+      "pixelCount": 730,
+      "bounds": [
+        613,
+        533,
+        655,
+        574
+      ]
+    },
+    {
+      "id": 18,
+      "maskColor": "#51637F",
+      "pixelCount": 233,
+      "bounds": [
+        163,
+        583,
+        180,
+        599
+      ]
+    },
+    {
+      "id": 19,
+      "maskColor": "#76ACEC",
+      "pixelCount": 93,
+      "bounds": [
+        488,
+        616,
+        499,
+        626
+      ]
     }
   ]
 }

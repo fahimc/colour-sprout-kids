@@ -540,6 +540,7 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
     var saturation by remember { mutableFloatStateOf(.82f) }
     var value by remember { mutableFloatStateOf(1f) }
     var showClear by remember { mutableStateOf(false) }
+    var showMixer by remember { mutableStateOf(false) }
     val config = LocalConfiguration.current
     val landscape = config.screenWidthDp > config.screenHeightDp
 
@@ -606,43 +607,38 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
             )
         }
     } else {
-        Column(
+        Box(
             Modifier
                 .fillMaxSize()
                 .background(Brush.verticalGradient(listOf(Color(0xFFFFE1AA), Color(0xFF8BCB91))))
                 .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-                ToolShelf(tool, onTool = { tool = it }, onBack = onBack, onSave = {
-                    session.save(false)
-                    Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
-                }, horizontal = true)
-            }
             ColoringCanvas(
-                modifier = Modifier.weight(1f).fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 session = session,
                 tool = tool,
                 selectedColor = selectedColor,
                 brushSize = brushSize.roundToInt(),
                 onPickColor = { selectedColor = it },
             )
-            ColorPanel(
+            ToolShelf(
+                tool = tool,
+                onTool = { tool = it },
+                onBack = onBack,
+                onSave = {
+                    session.save(false)
+                    Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                },
+                horizontal = true,
+                modifier = Modifier.align(Alignment.TopCenter),
+            )
+            CompactColorBar(
+                modifier = Modifier.align(Alignment.BottomCenter),
                 selectedColor = selectedColor,
                 onColor = { selectedColor = it },
                 hue = hue,
                 onHue = {
                     hue = it
-                    selectedColor = Color.hsv(hue, saturation, value)
-                },
-                saturation = saturation,
-                onSaturation = {
-                    saturation = it
-                    selectedColor = Color.hsv(hue, saturation, value)
-                },
-                value = value,
-                onValue = {
-                    value = it
                     selectedColor = Color.hsv(hue, saturation, value)
                 },
                 brushSize = brushSize,
@@ -652,13 +648,57 @@ fun ColoringScreen(page: ColoringPage, onBack: () -> Unit, onFinished: (String?)
                 onRedo = session::redo,
                 onClearArea = { session.clearRegion(session.selectedRegion) },
                 onClearAll = { showClear = true },
+                onMixer = { showMixer = true },
                 onDone = {
                     val path = session.save(true)
                     Toast.makeText(context, "Saved to gallery", Toast.LENGTH_SHORT).show()
                     onFinished(path)
                 },
-                compact = true,
             )
+            if (showMixer) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .background(Color(0x66000000))
+                        .clickable { showMixer = false },
+                    contentAlignment = Alignment.BottomCenter,
+                ) {
+                    Box(Modifier.padding(10.dp).clickable(enabled = false) {}) {
+                        ColorPanel(
+                            selectedColor = selectedColor,
+                            onColor = { selectedColor = it },
+                            hue = hue,
+                            onHue = {
+                                hue = it
+                                selectedColor = Color.hsv(hue, saturation, value)
+                            },
+                            saturation = saturation,
+                            onSaturation = {
+                                saturation = it
+                                selectedColor = Color.hsv(hue, saturation, value)
+                            },
+                            value = value,
+                            onValue = {
+                                value = it
+                                selectedColor = Color.hsv(hue, saturation, value)
+                            },
+                            brushSize = brushSize,
+                            onBrushSize = { brushSize = it },
+                            recent = session.recentColors,
+                            onUndo = session::undo,
+                            onRedo = session::redo,
+                            onClearArea = { session.clearRegion(session.selectedRegion) },
+                            onClearAll = { showClear = true },
+                            onDone = {
+                                val path = session.save(true)
+                                Toast.makeText(context, "Saved to gallery", Toast.LENGTH_SHORT).show()
+                                onFinished(path)
+                            },
+                            compact = true,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -670,18 +710,26 @@ fun ToolShelf(
     onBack: () -> Unit,
     onSave: () -> Unit,
     horizontal: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val tools = listOf(Tool.Brush, Tool.Bucket, Tool.Crayon, Tool.Marker, Tool.Glitter, Tool.Eraser, Tool.EyeDropper)
-    val modifier = if (horizontal) Modifier.fillMaxWidth().height(70.dp) else Modifier.width(78.dp).fillMaxHeight()
+    val baseModifier = modifier.then(if (horizontal) Modifier.fillMaxWidth().height(58.dp) else Modifier.width(72.dp).fillMaxHeight())
     val arrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     if (horizontal) {
-        Row(modifier.background(Color(0xAA7A4E2C), RoundedCornerShape(18.dp)).padding(8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            baseModifier
+                .background(Color(0xD07A4E2C), RoundedCornerShape(18.dp))
+                .horizontalScroll(rememberScrollState())
+                .padding(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             ToolButton("BACK", false, onClick = onBack)
             tools.forEach { ToolButton(toolIcon(it), tool == it, onClick = { onTool(it) }) }
             ToolButton("SAVE", false, onClick = onSave, color = Color(0xFF45B86B))
         }
     } else {
-        Column(modifier.background(Color(0xAA7A4E2C), RoundedCornerShape(22.dp)).padding(8.dp), verticalArrangement = arrangement, horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(baseModifier.background(Color(0xAA7A4E2C), RoundedCornerShape(22.dp)).padding(8.dp), verticalArrangement = arrangement, horizontalAlignment = Alignment.CenterHorizontally) {
             ToolButton("BACK", false, onClick = onBack)
             tools.forEach { ToolButton(toolIcon(it), tool == it, onClick = { onTool(it) }) }
             ToolButton("SAVE", false, onClick = onSave, color = Color(0xFF45B86B))
@@ -693,13 +741,13 @@ fun ToolShelf(
 fun ToolButton(label: String, selected: Boolean, onClick: () -> Unit, color: Color = Color(0xFFFFF5D7)) {
     Button(
         onClick = onClick,
-        modifier = Modifier.size(54.dp),
+        modifier = Modifier.size(44.dp),
         shape = CircleShape,
         contentPadding = ButtonDefaults.ContentPadding,
         colors = ButtonDefaults.buttonColors(containerColor = if (selected) Color(0xFFFFC94A) else color),
         elevation = ButtonDefaults.buttonElevation(7.dp),
     ) {
-        Text(label, color = Color(0xFF5C3B22), fontSize = 21.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
+        Text(label, color = Color(0xFF5C3B22), fontSize = if (label.length > 2) 9.sp else 16.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
     }
 }
 
@@ -921,6 +969,60 @@ private fun mapToImage(offset: Offset, canvasSize: IntSize, imageWidth: Int, ima
     val x = ((offset.x - rect.left) / rect.width * imageWidth).roundToInt().coerceIn(0, imageWidth - 1)
     val y = ((offset.y - rect.top) / rect.height * imageHeight).roundToInt().coerceIn(0, imageHeight - 1)
     return x to y
+}
+
+@Composable
+fun CompactColorBar(
+    modifier: Modifier,
+    selectedColor: Color,
+    onColor: (Color) -> Unit,
+    hue: Float,
+    onHue: (Float) -> Unit,
+    brushSize: Float,
+    onBrushSize: (Float) -> Unit,
+    recent: List<Color>,
+    onUndo: () -> Unit,
+    onRedo: () -> Unit,
+    onClearArea: () -> Unit,
+    onClearAll: () -> Unit,
+    onMixer: () -> Unit,
+    onDone: () -> Unit,
+) {
+    val swatches = listOf(
+        Color(0xFFFF3B30), Color(0xFFFF9500), Color(0xFFFFCC00), Color(0xFF34C759),
+        Color(0xFF00C7BE), Color(0xFF007AFF), Color(0xFF5856D6), Color(0xFFFF2D55),
+        Color(0xFFFFFFFF), Color(0xFF8E8E93), Color(0xFF3A2A20), Color(0xFF000000),
+    )
+    Column(
+        modifier
+            .fillMaxWidth()
+            .background(Color(0xE0704A2C), RoundedCornerShape(18.dp))
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(Modifier.size(40.dp).background(selectedColor, CircleShape).border(3.dp, Color.White, CircleShape))
+            Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                (swatches + recent).distinct().forEach { swatch ->
+                    Box(Modifier.size(32.dp).background(swatch, CircleShape).border(2.dp, Color.White, CircleShape).clickable { onColor(swatch) })
+                }
+            }
+            MiniButton("MIX", onMixer, Color(0xFFFFC94A))
+            MiniButton("OK", onDone, Color(0xFF45B86B))
+        }
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Hue", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(30.dp))
+            Slider(value = hue, onValueChange = onHue, valueRange = 0f..360f, modifier = Modifier.weight(1f))
+            Text("Size", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(30.dp))
+            Slider(value = brushSize, onValueChange = onBrushSize, valueRange = 5f..54f, modifier = Modifier.weight(1f))
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+            MiniButton("UN", onUndo)
+            MiniButton("RE", onRedo)
+            MiniButton("CLR", onClearArea)
+            MiniButton("ALL", onClearAll)
+        }
+    }
 }
 
 object ProgressStore {

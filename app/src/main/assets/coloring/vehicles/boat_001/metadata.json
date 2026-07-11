@@ -10,23 +10,140 @@
   "lineArtPath": "coloring/vehicles/boat_001/line.png",
   "maskPath": "coloring/vehicles/boat_001/mask.png",
   "thumbnailPath": "coloring/vehicles/boat_001/thumb.png",
-  "licenseId": "generated-boat_001",
+  "licenseId": "ai-generated-boat_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
-      "maskColor": "#951F8F",
-      "pixelCount": 24661
+      "maskColor": "#70B222",
+      "pixelCount": 3868,
+      "bounds": [
+        353,
+        30,
+        362,
+        444
+      ]
     },
     {
       "id": 2,
-      "maskColor": "#BA6820",
-      "pixelCount": 21326
+      "maskColor": "#951F8F",
+      "pixelCount": 3605,
+      "bounds": [
+        371,
+        48,
+        481,
+        97
+      ]
     },
     {
       "id": 3,
-      "maskColor": "#70B222",
-      "pixelCount": 58181
+      "maskColor": "#BA6820",
+      "pixelCount": 27385,
+      "bounds": [
+        172,
+        89,
+        342,
+        420
+      ]
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 35371,
+      "bounds": [
+        371,
+        112,
+        573,
+        423
+      ]
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 2784,
+      "bounds": [
+        327,
+        137,
+        342,
+        397
+      ]
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 866,
+      "bounds": [
+        372,
+        179,
+        379,
+        348
+      ]
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 10055,
+      "bounds": [
+        107,
+        426,
+        624,
+        473
+      ]
+    },
+    {
+      "id": 8,
+      "maskColor": "#971D89",
+      "pixelCount": 261,
+      "bounds": [
+        522,
+        427,
+        584,
+        436
+      ]
+    },
+    {
+      "id": 9,
+      "maskColor": "#BC661A",
+      "pixelCount": 15769,
+      "bounds": [
+        114,
+        456,
+        619,
+        517
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 1379,
+      "bounds": [
+        214,
+        495,
+        256,
+        537
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 15677,
+      "bounds": [
+        128,
+        500,
+        606,
+        561
+      ]
+    },
+    {
+      "id": 12,
+      "maskColor": "#4F6585",
+      "pixelCount": 9916,
+      "bounds": [
+        154,
+        546,
+        583,
+        600
+      ]
     }
   ]
 }

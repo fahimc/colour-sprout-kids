@@ -10,53 +10,338 @@
   "lineArtPath": "coloring/dinosaurs/stegosaurus_001/line.png",
   "maskPath": "coloring/dinosaurs/stegosaurus_001/mask.png",
   "thumbnailPath": "coloring/dinosaurs/stegosaurus_001/thumb.png",
-  "licenseId": "generated-stegosaurus_001",
+  "licenseId": "ai-generated-stegosaurus_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
-      "maskColor": "#4D678B",
-      "pixelCount": 3094
+      "maskColor": "#70B222",
+      "pixelCount": 6891,
+      "bounds": [
+        324,
+        105,
+        411,
+        213
+      ]
     },
     {
       "id": 2,
-      "maskColor": "#72B01C",
-      "pixelCount": 3094
+      "maskColor": "#951F8F",
+      "pixelCount": 5976,
+      "bounds": [
+        228,
+        116,
+        306,
+        221
+      ]
     },
     {
       "id": 3,
-      "maskColor": "#971D89",
-      "pixelCount": 3094
+      "maskColor": "#BA6820",
+      "pixelCount": 4862,
+      "bounds": [
+        420,
+        162,
+        493,
+        252
+      ]
     },
     {
       "id": 4,
-      "maskColor": "#BC661A",
-      "pixelCount": 3096
+      "maskColor": "#DFB18D",
+      "pixelCount": 139,
+      "bounds": [
+        311,
+        182,
+        323,
+        205
+      ]
     },
     {
       "id": 5,
-      "maskColor": "#951F8F",
-      "pixelCount": 16734
+      "maskColor": "#281E1E",
+      "pixelCount": 4223,
+      "bounds": [
+        156,
+        184,
+        225,
+        266
+      ]
     },
     {
       "id": 6,
-      "maskColor": "#70B222",
-      "pixelCount": 72554
+      "maskColor": "#4D678B",
+      "pixelCount": 140,
+      "bounds": [
+        398,
+        201,
+        411,
+        223
+      ]
     },
     {
       "id": 7,
-      "maskColor": "#BA6820",
-      "pixelCount": 5681
+      "maskColor": "#72B01C",
+      "pixelCount": 95,
+      "bounds": [
+        233,
+        216,
+        244,
+        232
+      ]
     },
     {
       "id": 8,
-      "maskColor": "#DFB18D",
-      "pixelCount": 5485
+      "maskColor": "#971D89",
+      "pixelCount": 3259,
+      "bounds": [
+        481,
+        236,
+        547,
+        303
+      ]
     },
     {
       "id": 9,
-      "maskColor": "#281E1E",
-      "pixelCount": 5485
+      "maskColor": "#BC661A",
+      "pixelCount": 1503,
+      "bounds": [
+        316,
+        239,
+        367,
+        274
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 1110,
+      "bounds": [
+        238,
+        258,
+        280,
+        293
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 1936,
+      "bounds": [
+        132,
+        262,
+        181,
+        314
+      ]
+    },
+    {
+      "id": 12,
+      "maskColor": "#4F6585",
+      "pixelCount": 858,
+      "bounds": [
+        406,
+        268,
+        442,
+        299
+      ]
+    },
+    {
+      "id": 13,
+      "maskColor": "#74AEF2",
+      "pixelCount": 344,
+      "bounds": [
+        299,
+        301,
+        322,
+        320
+      ]
+    },
+    {
+      "id": 14,
+      "maskColor": "#991B83",
+      "pixelCount": 2411,
+      "bounds": [
+        521,
+        303,
+        580,
+        358
+      ]
+    },
+    {
+      "id": 15,
+      "maskColor": "#BE64F0",
+      "pixelCount": 244,
+      "bounds": [
+        40,
+        304,
+        66,
+        341
+      ]
+    },
+    {
+      "id": 16,
+      "maskColor": "#E3AD81",
+      "pixelCount": 479,
+      "bounds": [
+        360,
+        304,
+        387,
+        325
+      ]
+    },
+    {
+      "id": 17,
+      "maskColor": "#2C1AEE",
+      "pixelCount": 492,
+      "bounds": [
+        451,
+        324,
+        477,
+        348
+      ]
+    },
+    {
+      "id": 18,
+      "maskColor": "#51637F",
+      "pixelCount": 1476,
+      "bounds": [
+        551,
+        363,
+        600,
+        405
+      ]
+    },
+    {
+      "id": 19,
+      "maskColor": "#76ACEC",
+      "pixelCount": 930,
+      "bounds": [
+        598,
+        403,
+        633,
+        439
+      ]
+    },
+    {
+      "id": 20,
+      "maskColor": "#9B197D",
+      "pixelCount": 1104,
+      "bounds": [
+        479,
+        469,
+        583,
+        497
+      ]
+    },
+    {
+      "id": 21,
+      "maskColor": "#C062EA",
+      "pixelCount": 3328,
+      "bounds": [
+        113,
+        483,
+        181,
+        565
+      ]
+    },
+    {
+      "id": 22,
+      "maskColor": "#E5AB7B",
+      "pixelCount": 2489,
+      "bounds": [
+        320,
+        510,
+        387,
+        567
+      ]
+    },
+    {
+      "id": 23,
+      "maskColor": "#2EF4E8",
+      "pixelCount": 129,
+      "bounds": [
+        105,
+        544,
+        114,
+        561
+      ]
+    },
+    {
+      "id": 24,
+      "maskColor": "#536179",
+      "pixelCount": 120,
+      "bounds": [
+        312,
+        547,
+        321,
+        563
+      ]
+    },
+    {
+      "id": 25,
+      "maskColor": "#78AAE6",
+      "pixelCount": 214,
+      "bounds": [
+        121,
+        550,
+        138,
+        566
+      ]
+    },
+    {
+      "id": 26,
+      "maskColor": "#9DF377",
+      "pixelCount": 213,
+      "bounds": [
+        328,
+        552,
+        345,
+        567
+      ]
+    },
+    {
+      "id": 27,
+      "maskColor": "#C260E4",
+      "pixelCount": 159,
+      "bounds": [
+        169,
+        566,
+        180,
+        584
+      ]
+    },
+    {
+      "id": 28,
+      "maskColor": "#E7A975",
+      "pixelCount": 267,
+      "bounds": [
+        388,
+        566,
+        406,
+        586
+      ]
+    },
+    {
+      "id": 29,
+      "maskColor": "#30F2E2",
+      "pixelCount": 293,
+      "bounds": [
+        414,
+        571,
+        434,
+        588
+      ]
+    },
+    {
+      "id": 30,
+      "maskColor": "#555F73",
+      "pixelCount": 278,
+      "bounds": [
+        186,
+        572,
+        206,
+        589
+      ]
     }
   ]
 }

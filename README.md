@@ -6,7 +6,7 @@ ColourSprout Kids is a kid-friendly Android colouring-book game built with Kotli
 
 - Bright splash/home screen with a large play button.
 - Category browser with 32 starter colouring pages across animals, dinosaurs, vehicles, space, fantasy, sea life, nature, and cute food.
-- Landscape-first colouring canvas with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, undo, redo, clear area, clear page, save, and export PNG.
+- Canvas-first colouring screen with tap-to-fill, brush, crayon, marker, glitter, eraser, eyedropper, undo, redo, clear area, clear page, save, and export PNG.
 - Mask-constrained colouring so paint stays inside the line-art regions.
 - Local progress saving per page.
 - Export of final artwork as PNG.
@@ -40,15 +40,15 @@ Progress is saved in app-private storage:
 
 Export composes white background + user paint layer + line art into a final PNG. On Android 10 and newer it writes to `Pictures/ColourSprout Kids` through `MediaStore`; older devices use the app external files directory.
 
-## Run The Asset Fetcher
+## Run The Asset Pipeline
 
-The asset pipeline is local and reproducible:
+The asset pipeline is local and reproducible. It uses the generated source sheets in `tools/generated_sources/`, then splits them into individual colouring pages:
 
 ```powershell
 python tools\fetch_coloring_assets
 ```
 
-It generates 32 original closed-region pages, writes metadata, writes `app/src/main/assets/licenses.json`, and writes `asset-report.json`. The generated starter art is marked as project-generated CC0/public-domain-dedicated art, with no attribution required.
+It processes 32 original generated line-art pages, writes metadata, writes `app/src/main/assets/licenses.json`, and writes `asset-report.json`. The starter art is generated image content created for this project, not hand-drawn procedural placeholders and not third-party franchise/IP artwork.
 
 ## Verify Licenses
 
@@ -63,7 +63,7 @@ Open `app/src/main/assets/licenses.json` and verify every item has:
 - local file path
 - date downloaded
 
-If you replace generated art with third-party art, keep only public-domain, CC0, or properly licensed assets. Do not use Disney, Pixar, Marvel, Star Wars, Pokemon, Peppa Pig, Paw Patrol, or any copyrighted/trademarked characters, names, logos, or artwork.
+If you replace generated art with third-party art, keep only public-domain, CC0, or properly licensed assets. If you generate more art, save the source images and prompt/provenance in the repo and update `licenses.json`. Do not use Disney, Pixar, Marvel, Star Wars, Pokemon, Peppa Pig, Paw Patrol, or any copyrighted/trademarked characters, names, logos, or artwork.
 
 ## Add A New Colouring Page
 
@@ -128,7 +128,7 @@ Upload:
 ## Known Limitations
 
 - Pinch-to-zoom and pan are not implemented yet.
-- Automatic mask generation is used for generated starter assets; imported third-party art may need manual mask cleanup.
+- Automatic mask generation is used for generated starter assets; imported or newly generated art may need manual mask cleanup.
 - The finished screen confirms the existing exported PNG rather than creating multiple duplicate exports.
 - The current local release keystore is for this build only. Replace it with your own secure keystore before store distribution.
 

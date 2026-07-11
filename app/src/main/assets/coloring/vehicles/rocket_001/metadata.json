@@ -11,33 +11,140 @@
   "lineArtPath": "coloring/vehicles/rocket_001/line.png",
   "maskPath": "coloring/vehicles/rocket_001/mask.png",
   "thumbnailPath": "coloring/vehicles/rocket_001/thumb.png",
-  "licenseId": "generated-rocket_001",
+  "licenseId": "ai-generated-rocket_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
       "maskColor": "#70B222",
-      "pixelCount": 57782
+      "pixelCount": 10218,
+      "bounds": [
+        347,
+        26,
+        492,
+        135
+      ]
     },
     {
       "id": 2,
-      "maskColor": "#DFB18D",
-      "pixelCount": 6213
+      "maskColor": "#951F8F",
+      "pixelCount": 46707,
+      "bounds": [
+        306,
+        128,
+        531,
+        469
+      ]
     },
     {
       "id": 3,
-      "maskColor": "#951F8F",
-      "pixelCount": 13371
+      "maskColor": "#BA6820",
+      "pixelCount": 3181,
+      "bounds": [
+        360,
+        188,
+        478,
+        307
+      ]
     },
     {
       "id": 4,
-      "maskColor": "#BA6820",
-      "pixelCount": 13371
+      "maskColor": "#DFB18D",
+      "pixelCount": 5570,
+      "bounds": [
+        378,
+        206,
+        461,
+        289
+      ]
     },
     {
       "id": 5,
       "maskColor": "#281E1E",
-      "pixelCount": 9360
+      "pixelCount": 10336,
+      "bounds": [
+        237,
+        331,
+        318,
+        548
+      ]
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 10336,
+      "bounds": [
+        518,
+        331,
+        598,
+        548
+      ]
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 5191,
+      "bounds": [
+        398,
+        363,
+        439,
+        534
+      ]
+    },
+    {
+      "id": 8,
+      "maskColor": "#971D89",
+      "pixelCount": 873,
+      "bounds": [
+        336,
+        469,
+        392,
+        496
+      ]
+    },
+    {
+      "id": 9,
+      "maskColor": "#BC661A",
+      "pixelCount": 859,
+      "bounds": [
+        445,
+        469,
+        500,
+        496
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 6775,
+      "bounds": [
+        351,
+        502,
+        488,
+        657
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 4250,
+      "bounds": [
+        377,
+        506,
+        461,
+        603
+      ]
+    },
+    {
+      "id": 12,
+      "maskColor": "#4F6585",
+      "pixelCount": 149,
+      "bounds": [
+        170,
+        697,
+        182,
+        722
+      ]
     }
   ]
 }

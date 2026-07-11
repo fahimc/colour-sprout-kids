@@ -1,8 +1,8 @@
 {
   "id": "elephant_001",
-  "title": "Elephant",
+  "title": "Baby Elephant",
   "category": "animals",
-  "difficulty": "medium",
+  "difficulty": "easy",
   "tags": [
     "elephant",
     "animal"
@@ -10,33 +10,162 @@
   "lineArtPath": "coloring/animals/elephant_001/line.png",
   "maskPath": "coloring/animals/elephant_001/mask.png",
   "thumbnailPath": "coloring/animals/elephant_001/thumb.png",
-  "licenseId": "generated-elephant_001",
+  "licenseId": "ai-generated-elephant_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
-      "maskColor": "#DFB18D",
-      "pixelCount": 22340
+      "maskColor": "#70B222",
+      "pixelCount": 118469,
+      "bounds": [
+        75,
+        105,
+        679,
+        466
+      ]
     },
     {
       "id": 2,
       "maskColor": "#951F8F",
-      "pixelCount": 24410
+      "pixelCount": 16911,
+      "bounds": [
+        542,
+        141,
+        691,
+        392
+      ]
     },
     {
       "id": 3,
       "maskColor": "#BA6820",
-      "pixelCount": 24410
+      "pixelCount": 308,
+      "bounds": [
+        526,
+        294,
+        549,
+        337
+      ]
     },
     {
       "id": 4,
-      "maskColor": "#70B222",
-      "pixelCount": 56130
+      "maskColor": "#DFB18D",
+      "pixelCount": 544,
+      "bounds": [
+        378,
+        296,
+        418,
+        347
+      ]
     },
     {
       "id": 5,
       "maskColor": "#281E1E",
-      "pixelCount": 14545
+      "pixelCount": 55777,
+      "bounds": [
+        163,
+        399,
+        530,
+        658
+      ]
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 98,
+      "bounds": [
+        426,
+        433,
+        442,
+        448
+      ]
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 550,
+      "bounds": [
+        93,
+        515,
+        120,
+        555
+      ]
+    },
+    {
+      "id": 8,
+      "maskColor": "#971D89",
+      "pixelCount": 837,
+      "bounds": [
+        399,
+        573,
+        426,
+        631
+      ]
+    },
+    {
+      "id": 9,
+      "maskColor": "#BC661A",
+      "pixelCount": 320,
+      "bounds": [
+        514,
+        620,
+        532,
+        644
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 332,
+      "bounds": [
+        275,
+        624,
+        293,
+        648
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 469,
+      "bounds": [
+        478,
+        627,
+        506,
+        648
+      ]
+    },
+    {
+      "id": 12,
+      "maskColor": "#4F6585",
+      "pixelCount": 501,
+      "bounds": [
+        239,
+        630,
+        267,
+        653
+      ]
+    },
+    {
+      "id": 13,
+      "maskColor": "#74AEF2",
+      "pixelCount": 352,
+      "bounds": [
+        378,
+        635,
+        398,
+        658
+      ]
+    },
+    {
+      "id": 14,
+      "maskColor": "#991B83",
+      "pixelCount": 478,
+      "bounds": [
+        341,
+        639,
+        369,
+        660
+      ]
     }
   ]
 }

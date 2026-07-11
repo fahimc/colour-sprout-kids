@@ -10,23 +10,129 @@
   "lineArtPath": "coloring/space/moon_stars_001/line.png",
   "maskPath": "coloring/space/moon_stars_001/mask.png",
   "thumbnailPath": "coloring/space/moon_stars_001/thumb.png",
-  "licenseId": "generated-moon_stars_001",
+  "licenseId": "ai-generated-moon_stars_001",
   "needs_manual_mask": false,
   "regions": [
     {
       "id": 1,
-      "maskColor": "#BA6820",
-      "pixelCount": 13106
+      "maskColor": "#70B222",
+      "pixelCount": 908,
+      "bounds": [
+        411,
+        143,
+        459,
+        189
+      ]
     },
     {
       "id": 2,
-      "maskColor": "#70B222",
-      "pixelCount": 70920
+      "maskColor": "#951F8F",
+      "pixelCount": 118,
+      "bounds": [
+        95,
+        185,
+        106,
+        197
+      ]
     },
     {
       "id": 3,
-      "maskColor": "#951F8F",
-      "pixelCount": 3382
+      "maskColor": "#BA6820",
+      "pixelCount": 147,
+      "bounds": [
+        615,
+        234,
+        628,
+        247
+      ]
+    },
+    {
+      "id": 4,
+      "maskColor": "#DFB18D",
+      "pixelCount": 1451,
+      "bounds": [
+        502,
+        295,
+        562,
+        351
+      ]
+    },
+    {
+      "id": 5,
+      "maskColor": "#281E1E",
+      "pixelCount": 2060,
+      "bounds": [
+        42,
+        312,
+        110,
+        385
+      ]
+    },
+    {
+      "id": 6,
+      "maskColor": "#4D678B",
+      "pixelCount": 4445,
+      "bounds": [
+        93,
+        487,
+        193,
+        587
+      ]
+    },
+    {
+      "id": 7,
+      "maskColor": "#72B01C",
+      "pixelCount": 161,
+      "bounds": [
+        675,
+        517,
+        689,
+        530
+      ]
+    },
+    {
+      "id": 8,
+      "maskColor": "#971D89",
+      "pixelCount": 2751,
+      "bounds": [
+        586,
+        570,
+        667,
+        649
+      ]
+    },
+    {
+      "id": 9,
+      "maskColor": "#BC661A",
+      "pixelCount": 787,
+      "bounds": [
+        306,
+        610,
+        350,
+        653
+      ]
+    },
+    {
+      "id": 10,
+      "maskColor": "#E1AF87",
+      "pixelCount": 162,
+      "bounds": [
+        201,
+        633,
+        215,
+        646
+      ]
+    },
+    {
+      "id": 11,
+      "maskColor": "#2A1CF4",
+      "pixelCount": 157,
+      "bounds": [
+        466,
+        643,
+        479,
+        656
+      ]
     }
   ]
 }
