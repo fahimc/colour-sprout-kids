@@ -144,6 +144,11 @@ enum class Tool(val label: String) {
     EyeDropper("Pick"),
 }
 
+private enum class CanvasGestureMode {
+    Paint,
+    Transform,
+}
+
 private sealed interface Screen {
     data object Home : Screen
     data object Browser : Screen
@@ -1021,6 +1026,7 @@ fun ColoringCanvas(
                     awaitEachGesture {
                         var strokeStarted = false
                         var didMove = false
+                        var gestureMode: CanvasGestureMode? = null
                         while (true) {
                             val event = awaitPointerEvent()
                             val pressed = event.changes.filter { it.pressed }
@@ -1045,25 +1051,36 @@ fun ColoringCanvas(
                                 break
                             }
 
-                            if (pressed.size > 1) {
+                            if (gestureMode == null) {
+                                gestureMode = if (pressed.size > 1) CanvasGestureMode.Transform else CanvasGestureMode.Paint
+                            }
+
+                            if (gestureMode == CanvasGestureMode.Paint && pressed.size > 1 && !strokeStarted && !didMove) {
+                                gestureMode = CanvasGestureMode.Transform
+                                lastPoint = null
+                            }
+
+                            if (gestureMode == CanvasGestureMode.Transform) {
                                 if (strokeStarted) {
                                     session.endStroke(selectedColor, tool)
                                     strokeStarted = false
                                 }
-                                val oldZoom = zoom
-                                val newZoom = (zoom * event.calculateZoom()).coerceIn(1f, 5f)
-                                val centroid = event.calculateCentroid(useCurrent = false)
-                                val canvasCenter = Offset(canvasSize.width / 2f, canvasSize.height / 2f)
-                                val zoomFocusShift = (centroid - canvasCenter - pan) * (1f - newZoom / oldZoom)
-                                zoom = newZoom
-                                pan = clampPan(
-                                    canvasSize.width.toFloat(),
-                                    canvasSize.height.toFloat(),
-                                    session.lineBitmap.width,
-                                    session.lineBitmap.height,
-                                    zoom,
-                                    pan + event.calculatePan() + zoomFocusShift,
-                                )
+                                if (pressed.size > 1) {
+                                    val oldZoom = zoom
+                                    val newZoom = (zoom * event.calculateZoom()).coerceIn(1f, 5f)
+                                    val centroid = event.calculateCentroid(useCurrent = false)
+                                    val canvasCenter = Offset(canvasSize.width / 2f, canvasSize.height / 2f)
+                                    val zoomFocusShift = (centroid - canvasCenter - pan) * (1f - newZoom / oldZoom)
+                                    zoom = newZoom
+                                    pan = clampPan(
+                                        canvasSize.width.toFloat(),
+                                        canvasSize.height.toFloat(),
+                                        session.lineBitmap.width,
+                                        session.lineBitmap.height,
+                                        zoom,
+                                        pan + event.calculatePan() + zoomFocusShift,
+                                    )
+                                }
                                 lastPoint = null
                                 didMove = true
                                 event.changes.forEach { it.consume() }
